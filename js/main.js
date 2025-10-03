@@ -285,6 +285,7 @@ const demoResults = document.getElementById('demoResults');
 if (processBtn && demoResults) {
     processBtn.addEventListener('click', () => {
         const inputText = document.getElementById('demoInput').value;
+        const specialty = document.getElementById('specialtySelect')?.value || 'General';
         
         if (!inputText.trim()) {
             showNotification('Please enter or select a clinical note first.', 'error');
@@ -292,26 +293,295 @@ if (processBtn && demoResults) {
         }
         
         // Show loading state
-        processBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Processing...';
+        processBtn.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Processing...';
         processBtn.disabled = true;
         
-        // Simulate processing
+        // Simulate processing with dynamic results
         setTimeout(() => {
+            generateDemoResults(inputText, specialty);
+            
+            // Show results
+            const resultsPlaceholder = document.getElementById('resultsPlaceholder');
+            const resultsBadge = document.getElementById('resultsBadge');
+            
+            if (resultsPlaceholder) resultsPlaceholder.classList.add('hidden');
+            if (resultsBadge) resultsBadge.classList.remove('hidden');
             demoResults.classList.remove('hidden');
-            demoResults.scrollIntoView({ behavior: 'smooth' });
-            processBtn.innerHTML = '<i class="fas fa-check mr-2"></i>Processed Successfully';
+            demoResults.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            
+            processBtn.innerHTML = '<i class="fas fa-check" style="margin-right: 0.5rem;"></i>Processed Successfully';
             processBtn.classList.remove('btn-primary');
             processBtn.classList.add('btn-success');
             
             // Reset after 3 seconds
             setTimeout(() => {
-                processBtn.innerHTML = '<i class="fas fa-magic mr-2"></i>Process with AI';
+                processBtn.innerHTML = '<i class="fas fa-magic" style="margin-right: 0.5rem;"></i>Process Note';
                 processBtn.disabled = false;
                 processBtn.classList.remove('btn-success');
                 processBtn.classList.add('btn-primary');
             }, 3000);
         }, 2300);
     });
+}
+
+// Generate dynamic demo results based on input
+function generateDemoResults(noteText, specialty) {
+    const entitiesContainer = document.getElementById('entitiesContainer');
+    const codesContainer = document.getElementById('codesContainer');
+    const risksContainer = document.getElementById('risksContainer');
+    
+    if (!entitiesContainer || !codesContainer || !risksContainer) return;
+    
+    // Extract entities based on keywords
+    const entities = extractEntities(noteText);
+    const codes = suggestCodes(noteText, specialty);
+    const risks = assessRisks(noteText);
+    
+    // Render entities
+    entitiesContainer.innerHTML = entities.map(entity => `
+        <span class="badge" style="background: ${entity.color}20; color: ${entity.color}; padding: 0.5rem 1rem; border-radius: 20px; font-weight: 600;">
+            ${entity.icon} ${entity.text}
+        </span>
+    `).join('');
+    
+    // Render codes
+    codesContainer.innerHTML = codes.map(code => `
+        <div style="padding: 1rem; background: #f7fafc; border-radius: 8px; border-left: 4px solid ${code.type === 'ICD-10' ? '#667eea' : '#48bb78'};">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                <div style="display: flex; align-items: center; gap: 0.75rem;">
+                    <span class="badge badge-${code.type === 'ICD-10' ? 'primary' : 'success'}" style="font-family: monospace;">${code.code}</span>
+                    <span style="font-weight: 600; color: var(--text-dark);">${code.description}</span>
+                </div>
+                <div style="display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 60px; height: 6px; background: #e2e8f0; border-radius: 3px; overflow: hidden;">
+                        <div style="width: ${code.confidence}%; height: 100%; background: ${code.confidence >= 90 ? '#48bb78' : code.confidence >= 75 ? '#ed8936' : '#f56565'}; transition: width 0.3s;"></div>
+                    </div>
+                    <span style="font-size: 0.875rem; color: var(--text-light); font-weight: 600;">${code.confidence}%</span>
+                </div>
+            </div>
+            <p style="font-size: 0.875rem; color: var(--text-light); margin: 0;">${code.rationale}</p>
+        </div>
+    `).join('');
+    
+    // Render risks
+    risksContainer.innerHTML = risks.map(risk => `
+        <div style="padding: 1rem; background: ${risk.level === 'High' ? '#fff5f5' : risk.level === 'Medium' ? '#fffaf0' : '#f0fff4'}; border-radius: 8px; border: 2px solid ${risk.level === 'High' ? '#fc8181' : risk.level === 'Medium' ? '#f6ad55' : '#9ae6b4'};">
+            <div style="display: flex; justify-content: between; align-items: center;">
+                <div style="flex: 1;">
+                    <div style="font-weight: 600; color: var(--text-dark); margin-bottom: 0.25rem;">${risk.category}</div>
+                    <div style="font-size: 0.875rem; color: var(--text-light);">${risk.detail}</div>
+                </div>
+                <span class="badge" style="background: ${risk.level === 'High' ? '#f56565' : risk.level === 'Medium' ? '#ed8936' : '#48bb78'}; color: white; margin-left: 1rem; white-space: nowrap;">
+                    ${risk.level} Risk
+                </span>
+            </div>
+        </div>
+    `).join('');
+}
+
+// Extract medical entities from text
+function extractEntities(text) {
+    const entities = [];
+    const lowerText = text.toLowerCase();
+    
+    // Diagnoses
+    if (lowerText.includes('diabetes') || lowerText.includes('dm')) {
+        entities.push({ text: 'Type 2 Diabetes', icon: '🩺', color: '#667eea' });
+    }
+    if (lowerText.includes('htn') || lowerText.includes('hypertension')) {
+        entities.push({ text: 'Hypertension', icon: '💉', color: '#ed8936' });
+    }
+    if (lowerText.includes('chest pain') || lowerText.includes('chest tightness')) {
+        entities.push({ text: 'Chest Pain', icon: '❤️', color: '#f56565' });
+    }
+    if (lowerText.includes('uri') || lowerText.includes('upper respiratory')) {
+        entities.push({ text: 'URI', icon: '🫁', color: '#48bb78' });
+    }
+    if (lowerText.includes('stemi') || lowerText.includes('st elevation')) {
+        entities.push({ text: 'STEMI', icon: '⚠️', color: '#c53030' });
+    }
+    
+    // Medications
+    if (lowerText.includes('aspirin')) entities.push({ text: 'Aspirin', icon: '💊', color: '#805ad5' });
+    if (lowerText.includes('metformin')) entities.push({ text: 'Metformin', icon: '💊', color: '#805ad5' });
+    if (lowerText.includes('heparin')) entities.push({ text: 'Heparin', icon: '💊', color: '#805ad5' });
+    if (lowerText.includes('acetaminophen')) entities.push({ text: 'Acetaminophen', icon: '💊', color: '#805ad5' });
+    
+    // Procedures
+    if (lowerText.includes('ecg') || lowerText.includes('ekg')) {
+        entities.push({ text: 'ECG', icon: '📊', color: '#3182ce' });
+    }
+    if (lowerText.includes('troponin')) {
+        entities.push({ text: 'Troponin Test', icon: '🔬', color: '#3182ce' });
+    }
+    if (lowerText.includes('a1c')) {
+        entities.push({ text: 'HbA1c Test', icon: '🔬', color: '#3182ce' });
+    }
+    
+    // Vitals
+    if (lowerText.match(/bp\s*\d+\/\d+/) || lowerText.match(/blood pressure/)) {
+        entities.push({ text: 'Blood Pressure', icon: '🩸', color: '#38a169' });
+    }
+    if (lowerText.includes('fever') || lowerText.match(/\d+\.\d+°f/)) {
+        entities.push({ text: 'Fever', icon: '🌡️', color: '#dd6b20' });
+    }
+    
+    return entities.slice(0, 10); // Limit to 10 entities
+}
+
+// Suggest ICD-10 and CPT codes
+function suggestCodes(text, specialty) {
+    const codes = [];
+    const lowerText = text.toLowerCase();
+    
+    // STEMI / Chest Pain
+    if (lowerText.includes('stemi') || lowerText.includes('st elevation')) {
+        codes.push({
+            type: 'ICD-10',
+            code: 'I21.09',
+            description: 'ST elevation myocardial infarction',
+            confidence: 94,
+            rationale: 'ST elevation noted in ECG leads II, III, aVF with chest pain presentation'
+        });
+        codes.push({
+            type: 'CPT',
+            code: '99285',
+            description: 'Emergency department visit - high complexity',
+            confidence: 96,
+            rationale: 'High complexity ED visit for acute cardiac emergency'
+        });
+    } else if (lowerText.includes('chest pain') || lowerText.includes('chest tightness')) {
+        codes.push({
+            type: 'ICD-10',
+            code: 'R07.9',
+            description: 'Chest pain, unspecified',
+            confidence: 88,
+            rationale: 'Patient presenting with chest tightness'
+        });
+    }
+    
+    // Diabetes
+    if (lowerText.includes('diabetes') || lowerText.includes('a1c')) {
+        codes.push({
+            type: 'ICD-10',
+            code: 'E11.9',
+            description: 'Type 2 diabetes mellitus without complications',
+            confidence: 92,
+            rationale: 'Established Type 2 diabetes with A1c monitoring'
+        });
+        if (lowerText.includes('follow') || lowerText.includes('followup')) {
+            codes.push({
+                type: 'CPT',
+                code: '99214',
+                description: 'Office visit - moderate complexity',
+                confidence: 90,
+                rationale: 'Follow-up visit for chronic condition management'
+            });
+        }
+    }
+    
+    // Hypertension
+    if (lowerText.includes('htn') || lowerText.includes('hypertension') || lowerText.match(/bp\s*1[45]\d/)) {
+        codes.push({
+            type: 'ICD-10',
+            code: 'I10',
+            description: 'Essential (primary) hypertension',
+            confidence: 90,
+            rationale: 'Documented history of hypertension with elevated BP'
+        });
+    }
+    
+    // URI / Pediatric
+    if (lowerText.includes('uri') || (lowerText.includes('cough') && lowerText.includes('fever'))) {
+        codes.push({
+            type: 'ICD-10',
+            code: 'J06.9',
+            description: 'Acute upper respiratory infection, unspecified',
+            confidence: 91,
+            rationale: 'Symptoms consistent with viral URI'
+        });
+        codes.push({
+            type: 'CPT',
+            code: '99213',
+            description: 'Office visit - low to moderate complexity',
+            confidence: 89,
+            rationale: 'Straightforward acute illness visit'
+        });
+    }
+    
+    // Lab tests
+    if (lowerText.includes('a1c')) {
+        codes.push({
+            type: 'CPT',
+            code: '83036',
+            description: 'Hemoglobin A1c test',
+            confidence: 95,
+            rationale: 'A1c test documented in note'
+        });
+    }
+    
+    return codes;
+}
+
+// Assess clinical risks
+function assessRisks(text) {
+    const risks = [];
+    const lowerText = text.toLowerCase();
+    
+    // Cardiac risk
+    if (lowerText.includes('stemi') || lowerText.includes('st elevation')) {
+        risks.push({
+            category: 'Acute Cardiac Event',
+            detail: 'STEMI identified - immediate intervention required',
+            level: 'High'
+        });
+    } else if (lowerText.includes('chest pain')) {
+        risks.push({
+            category: 'Cardiac Risk',
+            detail: 'Chest pain with cardiac history - monitor closely',
+            level: 'Medium'
+        });
+    }
+    
+    // Diabetes control
+    if (lowerText.match(/a1c\s*8\.\d/) || lowerText.includes('poor') && lowerText.includes('compliance')) {
+        risks.push({
+            category: 'Diabetes Control',
+            detail: 'Poor glycemic control (A1c >8%) - medication adherence needed',
+            level: 'Medium'
+        });
+    }
+    
+    // Readmission risk
+    if (lowerText.includes('missed') && lowerText.includes('medication')) {
+        risks.push({
+            category: 'Readmission Risk',
+            detail: 'Medication non-adherence increases readmission probability',
+            level: 'Medium'
+        });
+    }
+    
+    // Pediatric monitoring
+    if (lowerText.includes('child') || lowerText.includes('y/o') && lowerText.match(/[1-9]\s*y\/o/)) {
+        if (lowerText.includes('fever') && lowerText.match(/10[0-2]/)) {
+            risks.push({
+                category: 'Pediatric Monitoring',
+                detail: 'Low-grade fever - supportive care, monitor for worsening',
+                level: 'Low'
+            });
+        }
+    }
+    
+    // General monitoring
+    if (risks.length === 0) {
+        risks.push({
+            category: 'General Monitoring',
+            detail: 'Standard follow-up care recommended',
+            level: 'Low'
+        });
+    }
+    
+    return risks;
 }
 
 // Add success button style

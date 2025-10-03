@@ -1,0 +1,11 @@
+# robots.txt for ClinReport
+
+User-agent: *
+Allow: /
+
+# Sitemaps
+Sitemap: https://clinreport.ai/sitemap.xml
+
+# Disallow sensitive paths (when added in future)
+# Disallow: /admin/
+# Disallow: /api/
