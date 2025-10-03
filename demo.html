@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Demo - ClinReport</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="scroll-smooth">
+    
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <div class="nav-logo-icon">C</div>
+                <span class="nav-logo-text">ClinReport</span>
+            </a>
+            <ul class="nav-menu">
+                <li><a href="product.html">Product</a></li>
+                <li><a href="demo.html">Demo</a></li>
+                <li><a href="how-it-works.html">How it Works</a></li>
+                <li><a href="use-cases.html">Use Cases</a></li>
+                <li><a href="pricing.html">Pricing</a></li>
+                <li><a href="resources.html">Resources</a></li>
+            </ul>
+            <div class="nav-buttons">
+                <a href="contact.html" class="btn btn-primary">Get Started</a>
+            </div>
+            <button class="mobile-menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="padding-top: 8rem; padding-bottom: 4rem;">
+        <div class="container">
+            <div class="hero-content">
+                <div class="badge badge-success" style="margin-bottom: 1.5rem;">
+                    <i class="fas fa-flask"></i> Interactive Demo
+                </div>
+                <h1 class="hero-title">Live Clinical AI Playground</h1>
+                <p class="hero-subtitle">
+                    Experience real-time clinical note processing with AI-powered extraction and coding
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Demo Section -->
+    <section style="padding: 4rem 1rem; background: white;">
+        <div class="container">
+            <div class="grid grid-2" style="gap: 2.5rem; align-items: start;">
+                <!-- Input Section -->
+                <div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h3 style="font-size: 1.5rem; font-weight: 700;">Clinical Note Input</h3>
+                            <span class="badge badge-primary">
+                                <i class="fas fa-file-medical"></i> Clinical Note
+                            </span>
+                        </div>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <label class="form-label" style="font-weight: 600; margin-bottom: 0.75rem;">Quick Start - Demo Notes</label>
+                            <div style="display: grid; gap: 0.75rem;">
+                                <button class="btn demo-note-btn" data-note="er-chest-pain" style="width: 100%; text-align: left; background: white; border: 2px solid #e2e8f0; color: var(--text-dark); padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+                                    <i class="fas fa-heartbeat" style="color: #f56565; font-size: 1.25rem; margin-top: 0.125rem;"></i>
+                                    <div style="text-align: left;">
+                                        <div style="font-weight: 600; margin-bottom: 0.25rem;">ER — Chest pain</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-light); font-weight: normal;">Patient: Mr. Chan, 57 y/o male with HTN and Type 2 diabetes ...</div>
+                                    </div>
+                                </button>
+                                <button class="btn demo-note-btn" data-note="diabetes-followup" style="width: 100%; text-align: left; background: white; border: 2px solid #e2e8f0; color: var(--text-dark); padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+                                    <i class="fas fa-notes-medical" style="color: #48bb78; font-size: 1.25rem; margin-top: 0.125rem;"></i>
+                                    <div style="text-align: left;">
+                                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Primary Care — Diabetes follow-up</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-light); font-weight: normal;">Ms. Srey, 45 y/o female. Type 2 diabetes, A1c 8.2% last week...</div>
+                                    </div>
+                                </button>
+                                <button class="btn demo-note-btn" data-note="pediatric-uri" style="width: 100%; text-align: left; background: white; border: 2px solid #e2e8f0; color: var(--text-dark); padding: 1rem; display: flex; align-items: flex-start; gap: 1rem; transition: all 0.2s;">
+                                    <i class="fas fa-child" style="color: #667eea; font-size: 1.25rem; margin-top: 0.125rem;"></i>
+                                    <div style="text-align: left;">
+                                        <div style="font-weight: 600; margin-bottom: 0.25rem;">Telehealth — Pediatric URI</div>
+                                        <div style="font-size: 0.875rem; color: var(--text-light); font-weight: normal;">Patient: 6 y/o child with 2-day cough and low-grade fever. N...</div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 600; margin-bottom: 0.75rem;">Or Enter Your Clinical Note</label>
+                            <textarea id="demoInput" class="form-textarea" placeholder="Enter clinical note here..." style="min-height: 180px; font-family: 'Inter', sans-serif; font-size: 0.9375rem; line-height: 1.6;"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" style="font-weight: 600; margin-bottom: 0.75rem; display: flex; align-items: center; gap: 0.5rem;">
+                                Specialty
+                                <i class="fas fa-stethoscope" style="font-size: 0.875rem; color: var(--text-light);"></i>
+                            </label>
+                            <select class="form-select">
+                                <option>General</option>
+                                <option>Emergency Medicine</option>
+                                <option>Family Medicine</option>
+                                <option>Internal Medicine</option>
+                                <option>Pediatrics</option>
+                                <option>Cardiology</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        
+                        <button id="processBtn" class="btn btn-primary btn-lg" style="width: 100%;">
+                            <i class="fas fa-magic" style="margin-right: 0.5rem;"></i>Process Note
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Results Section -->
+                <div>
+                    <div class="card">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                            <h3 style="font-size: 1.5rem; font-weight: 700;">Analysis Results</h3>
+                            <span class="badge badge-success hidden" id="resultsBadge">
+                                <i class="fas fa-check"></i> Processed in 2.3s
+                            </span>
+                        </div>
+                        
+                        <div id="demoResults" class="hidden">
+                            <!-- Extracted Entities -->
+                            <div style="margin-bottom: 2rem;">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                                    <i class="fas fa-tags" style="color: var(--primary-color); margin-right: 0.75rem;"></i>
+                                    Extracted Entities
+                                </h4>
+                                <div id="entitiesContainer" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+                                    <!-- Dynamic entities will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Suggested Codes -->
+                            <div style="margin-bottom: 2rem;">
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                                    <i class="fas fa-code" style="color: var(--primary-color); margin-right: 0.75rem;"></i>
+                                    Suggested Codes
+                                </h4>
+                                <div id="codesContainer" style="display: flex; flex-direction: column; gap: 0.75rem;">
+                                    <!-- Dynamic codes will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <!-- Risk Assessment -->
+                            <div>
+                                <h4 style="font-weight: 600; margin-bottom: 1rem; display: flex; align-items: center;">
+                                    <i class="fas fa-exclamation-triangle" style="color: var(--warning-color); margin-right: 0.75rem;"></i>
+                                    Risk Assessment
+                                </h4>
+                                <div id="risksContainer" style="display: flex; flex-direction: column; gap: 1rem;">
+                                    <!-- Dynamic risks will be inserted here -->
+                                </div>
+                            </div>
+                            
+                            <button class="btn btn-primary btn-lg" style="width: 100%; margin-top: 2rem;">
+                                <i class="fas fa-download" style="margin-right: 0.5rem;"></i>Export Results
+                            </button>
+                        </div>
+                        
+                        <!-- Placeholder -->
+                        <div id="resultsPlaceholder">
+                            <div style="text-align: center; padding: 3rem 1rem; color: var(--text-light);">
+                                <i class="fas fa-clipboard-list" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                                <p style="font-size: 1.125rem;">Process a clinical note to see AI analysis results</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="gradient-bg" style="color: white; text-align: center;">
+        <div class="container">
+            <h2 style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1.5rem;">Ready to implement in your workflow?</h2>
+            <p style="font-size: 1.25rem; margin-bottom: 2rem; color: #e0d9ff;">
+                This demo shows just a glimpse of ClinReport's capabilities. Get started with a pilot program today.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="contact.html" class="btn btn-lg" style="background: white; color: var(--primary-color);">
+                    Request Pilot Program
+                </a>
+                <a href="contact.html" class="btn btn-lg" style="background: transparent; border: 2px solid white; color: white;">
+                    Schedule Demo Call
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-section">
+                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                        <div style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 700; font-size: 1.25rem;">
+                            C
+                        </div>
+                        <span style="font-size: 1.5rem; font-weight: 700; color: white;">ClinReport</span>
+                    </div>
+                    <p style="margin-bottom: 1rem;">Transforming clinical documentation with AI-powered intelligence.</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Product</h4>
+                    <ul class="footer-links">
+                        <li><a href="product.html">Features</a></li>
+                        <li><a href="demo.html">Live Demo</a></li>
+                        <li><a href="how-it-works.html">How it Works</a></li>
+                        <li><a href="pricing.html">Pricing</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Resources</h4>
+                    <ul class="footer-links">
+                        <li><a href="resources.html">Documentation</a></li>
+                        <li><a href="security.html">Security</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4>Get Started</h4>
+                    <a href="contact.html" class="btn btn-primary" style="width: 100%;">Request Pilot</a>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>© 2024 ClinReport AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Demo-specific JavaScript with dynamic results (wrapped to avoid conflicts)
+        (function() {
+            const processBtnDemo = document.getElementById('processBtn');
+            const demoResultsEl = document.getElementById('demoResults');
+            const resultsPlaceholderEl = document.getElementById('resultsPlaceholder');
+            const resultsBadgeEl = document.getElementById('resultsBadge');
+            const specialtySelectEl = document.querySelector('.form-select');
+            let currentNoteType = 'er-chest-pain'; // Default
+            let currentSpecialty = 'General'; // Default
+        
+        // Results data for each demo note
+        const resultsData = {
+            'er-chest-pain': {
+                entities: [
+                    { text: 'chest tightness', confidence: 95 },
+                    { text: 'HTN', confidence: 99 },
+                    { text: 'Type 2 diabetes', confidence: 98 },
+                    { text: 'radiating pain', confidence: 92 },
+                    { text: 'BP elevated', confidence: 96 }
+                ],
+                codes: [
+                    { code: 'R07.9', description: 'Chest pain, unspecified', confidence: 82 },
+                    { code: 'I20.9', description: 'Angina pectoris, unspecified', confidence: 64 },
+                    { code: 'I10', description: 'Essential hypertension', confidence: 99 },
+                    { code: 'E11.9', description: 'Type 2 diabetes mellitus', confidence: 98 }
+                ],
+                risks: [
+                    { name: 'Cardiac Risk', value: 78, color: '#f56565', level: 'High' },
+                    { name: 'Readmission Risk', value: 45, color: '#ed8936', level: 'Medium' }
+                ]
+            },
+            'diabetes-followup': {
+                entities: [
+                    { text: 'Type 2 diabetes', confidence: 99 },
+                    { text: 'A1c 8.2%', confidence: 98 },
+                    { text: 'poor compliance', confidence: 87 },
+                    { text: 'metformin', confidence: 96 },
+                    { text: 'weight gain', confidence: 91 }
+                ],
+                codes: [
+                    { code: 'E11.65', description: 'Type 2 DM with hyperglycemia', confidence: 94 },
+                    { code: 'Z79.84', description: 'Long term use of oral hypoglycemic', confidence: 96 },
+                    { code: 'Z91.19', description: 'Patient noncompliance with medical regimen', confidence: 89 },
+                    { code: 'E66.9', description: 'Obesity, unspecified', confidence: 72 }
+                ],
+                risks: [
+                    { name: 'Diabetes Complication Risk', value: 68, color: '#ed8936', level: 'Medium-High' },
+                    { name: 'Cardiovascular Risk', value: 52, color: '#ed8936', level: 'Medium' }
+                ]
+            },
+            'pediatric-uri': {
+                entities: [
+                    { text: '6 y/o child', confidence: 99 },
+                    { text: '2-day cough', confidence: 97 },
+                    { text: 'low-grade fever', confidence: 95 },
+                    { text: 'viral URI', confidence: 92 },
+                    { text: 'lungs clear', confidence: 98 }
+                ],
+                codes: [
+                    { code: 'J06.9', description: 'Acute upper respiratory infection', confidence: 94 },
+                    { code: 'R05.9', description: 'Cough, unspecified', confidence: 88 },
+                    { code: 'R50.9', description: 'Fever, unspecified', confidence: 86 }
+                ],
+                risks: [
+                    { name: 'Complication Risk', value: 18, color: '#48bb78', level: 'Low' },
+                    { name: 'Secondary Infection Risk', value: 25, color: '#48bb78', level: 'Low' }
+                ]
+            }
+        };
+        
+        // Specialty-specific adjustments to results
+        const specialtyModifiers = {
+            'Emergency Medicine': {
+                codeBoost: ['R07', 'I20', 'I21'], // Boost cardiac codes
+                riskFocus: 'acute',
+                additionalCodes: [
+                    { code: 'R55', description: 'Syncope and collapse', confidence: 45 }
+                ]
+            },
+            'Cardiology': {
+                codeBoost: ['I20', 'I21', 'I25', 'I10'], // Boost all cardiac codes
+                riskFocus: 'cardiac',
+                additionalCodes: [
+                    { code: 'I25.10', description: 'Atherosclerotic heart disease', confidence: 58 }
+                ]
+            },
+            'Family Medicine': {
+                codeBoost: ['E11', 'I10', 'E66'], // Boost chronic conditions
+                riskFocus: 'chronic',
+                additionalCodes: [
+                    { code: 'Z00.00', description: 'Encounter for general adult medical exam', confidence: 82 }
+                ]
+            },
+            'Internal Medicine': {
+                codeBoost: ['E11', 'I10', 'E78'], // Boost metabolic codes
+                riskFocus: 'systemic',
+                additionalCodes: [
+                    { code: 'E78.5', description: 'Hyperlipidemia, unspecified', confidence: 67 }
+                ]
+            },
+            'Pediatrics': {
+                codeBoost: ['J06', 'J00', 'R05'], // Boost pediatric codes
+                riskFocus: 'developmental',
+                additionalCodes: [
+                    { code: 'Z00.121', description: 'Encounter for routine child health exam', confidence: 75 }
+                ]
+            }
+        };
+        
+        // Update results display with specialty modifications
+        function updateResults(noteType, specialty) {
+            console.log('updateResults called with:', noteType, specialty);
+            
+            let data = JSON.parse(JSON.stringify(resultsData[noteType])); // Deep copy
+            if (!data) {
+                console.error('No data found for note type:', noteType);
+                return;
+            }
+            
+            console.log('Original data:', data);
+            
+            // Apply specialty modifications
+            const modifier = specialtyModifiers[specialty];
+            if (modifier) {
+                console.log('Applying modifier for specialty:', specialty);
+                
+                // Boost relevant code confidences
+                data.codes = data.codes.map(c => {
+                    const shouldBoost = modifier.codeBoost.some(prefix => c.code.startsWith(prefix));
+                    if (shouldBoost) {
+                        return { ...c, confidence: Math.min(99, c.confidence + 8) };
+                    }
+                    return c;
+                });
+                
+                // Add specialty-specific codes
+                if (modifier.additionalCodes) {
+                    data.codes = [...data.codes, ...modifier.additionalCodes];
+                }
+                
+                // Sort by confidence
+                data.codes.sort((a, b) => b.confidence - a.confidence);
+                
+                // Keep top 4 codes
+                data.codes = data.codes.slice(0, 4);
+            }
+            
+            console.log('Modified data:', data);
+            
+            // Update entities using the correct ID
+            const entitiesContainer = document.getElementById('entitiesContainer');
+            console.log('Entities container found:', !!entitiesContainer);
+            if (entitiesContainer) {
+                const entitiesHTML = data.entities.map(e => 
+                    `<span class="entity-tag">${e.text} (${e.confidence}%)</span>`
+                ).join('');
+                console.log('Entities HTML:', entitiesHTML);
+                entitiesContainer.innerHTML = entitiesHTML;
+            }
+            
+            // Update codes using the correct ID
+            const codesContainer = document.getElementById('codesContainer');
+            console.log('Codes container found:', !!codesContainer);
+            if (codesContainer) {
+                const codesHTML = data.codes.map(c => `
+                    <div class="code-suggestion">
+                        <div>
+                            <div style="font-weight: 600;">ICD-10: ${c.code}</div>
+                            <div style="font-size: 0.875rem; color: var(--text-light);">${c.description}</div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: 600; color: var(--success-color);">${c.confidence}%</div>
+                            <div style="font-size: 0.75rem; color: var(--text-light);">confidence</div>
+                        </div>
+                    </div>
+                `).join('');
+                console.log('Codes HTML length:', codesHTML.length);
+                codesContainer.innerHTML = codesHTML;
+            }
+            
+            // Update risks using the correct ID
+            const risksContainer = document.getElementById('risksContainer');
+            console.log('Risks container found:', !!risksContainer);
+            if (risksContainer) {
+                const risksHTML = data.risks.map(r => `
+                    <div>
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+                            <span style="font-weight: 500;">${r.name}</span>
+                            <span style="font-weight: 700; color: ${r.color};">${r.level} (${r.value}%)</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${r.value}%; background: ${r.color};"></div>
+                        </div>
+                    </div>
+                `).join('');
+                console.log('Risks HTML length:', risksHTML.length);
+                risksContainer.innerHTML = risksHTML;
+            }
+            
+            // Update processing time in badge
+            const processingTime = (1.8 + Math.random() * 1.2).toFixed(1);
+            if (resultsBadgeEl) {
+                resultsBadgeEl.innerHTML = `<i class="fas fa-check"></i> Processed in ${processingTime}s`;
+            }
+            
+            console.log('updateResults completed successfully');
+        }
+        
+        // Demo notes text content
+        const demoNotes = {
+            'er-chest-pain': 'Patient: Mr. Chan, 57 y/o male with HTN and Type 2 diabetes presents with chest tightness starting 2 hours ago, radiating to left arm. BP 150/90. Troponin pending. ECG shows ST elevation in leads II, III, aVF. Started on aspirin, heparin. Cardiology consulted for possible STEMI.',
+            'diabetes-followup': 'Patient: Ms. Srey, 45 y/o female. Type 2 diabetes, A1c 8.2% last week, up from 7.1% three months ago. Reports poor dietary compliance and missed metformin doses. No current symptoms. BP 128/82, weight up 5 lbs. Discussed importance of medication adherence and diet.',
+            'pediatric-uri': 'Patient: 6 y/o child with 2-day cough and low-grade fever (100.4°F). No difficulty breathing, eating well. Lungs clear bilaterally. Throat mildly erythematous. Dx: Viral URI. Advised supportive care, fluids, acetaminophen for fever. Return if worsening or fever >3 days.'
+        };
+        
+        // Demo note button handlers
+        document.querySelectorAll('.demo-note-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentNoteType = this.getAttribute('data-note');
+                
+                // Populate textarea with demo note
+                const demoInput = document.getElementById('demoInput');
+                if (demoInput && demoNotes[currentNoteType]) {
+                    demoInput.value = demoNotes[currentNoteType];
+                }
+                
+                // Remove active state from all buttons
+                document.querySelectorAll('.demo-note-btn').forEach(b => {
+                    b.style.borderColor = '#e2e8f0';
+                    b.style.background = 'white';
+                });
+                
+                // Add active state to clicked button
+                this.style.borderColor = '#667eea';
+                this.style.background = '#f7fafc';
+            });
+        });
+        
+        // Specialty selector handler
+        if (specialtySelectEl) {
+            specialtySelectEl.addEventListener('change', function() {
+                currentSpecialty = this.value;
+            });
+        }
+        
+        // Process button handler
+        if (processBtnDemo) {
+            console.log('Process button found, attaching event listener');
+            processBtnDemo.addEventListener('click', () => {
+                console.log('Process button clicked');
+                const inputText = document.getElementById('demoInput').value;
+                console.log('Input text length:', inputText.length);
+                
+                if (!inputText.trim()) {
+                    alert('Please enter or select a clinical note first.');
+                    return;
+                }
+                
+                console.log('Current note type:', currentNoteType);
+                console.log('Current specialty:', currentSpecialty);
+                
+                // Show loading state
+                processBtnDemo.innerHTML = '<i class="fas fa-spinner fa-spin" style="margin-right: 0.5rem;"></i>Processing...';
+                processBtnDemo.disabled = true;
+                
+                // Simulate processing with random time
+                const processingTime = 1800 + Math.random() * 1200;
+                console.log('Processing time:', processingTime);
+                
+                setTimeout(() => {
+                    console.log('Processing complete, updating results');
+                    
+                    // Update results with current note type and specialty
+                    updateResults(currentNoteType, currentSpecialty);
+                    
+                    // Hide placeholder and show results
+                    if (resultsPlaceholderEl) {
+                        resultsPlaceholderEl.style.display = 'none';
+                        console.log('Placeholder hidden');
+                    }
+                    
+                    if (demoResultsEl) {
+                        demoResultsEl.classList.remove('hidden');
+                        console.log('Results shown');
+                    }
+                    
+                    if (resultsBadgeEl) {
+                        resultsBadgeEl.classList.remove('hidden');
+                        console.log('Badge shown');
+                    }
+                    
+                    processBtnDemo.innerHTML = '<i class="fas fa-check" style="margin-right: 0.5rem;"></i>Processed Successfully';
+                    processBtnDemo.style.background = 'linear-gradient(135deg, #48bb78 0%, #38a169 100%)';
+                    
+                    // Scroll to results
+                    demoResultsEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // Reset after 3 seconds
+                    setTimeout(() => {
+                        processBtnDemo.innerHTML = '<i class="fas fa-magic" style="margin-right: 0.5rem;"></i>Process Note';
+                        processBtnDemo.disabled = false;
+                        processBtnDemo.style.background = '';
+                    }, 3000);
+                }, processingTime);
+            });
+        } else {
+            console.error('Process button not found!');
+        }
+        
+        // Log initialization
+        console.log('Demo page initialized');
+        console.log('Results data:', resultsData);
+        console.log('Specialty modifiers:', specialtyModifiers);
+        
+        })(); // End of IIFE
+    </script>
+</body>
+</html>
