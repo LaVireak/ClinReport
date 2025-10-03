@@ -1,491 +1,65 @@
-# ClinReport - Clinical Documentation Platform# ClinReport - Clinical Documentation Platform
+# ClinReport - Clinical Documentation Platform
 
+A modern static web app demonstrating clinical documentation features and an interactive demo that simulates AI-driven entity extraction, ICD-10 suggestions, and risk assessments.
 
+## Features
 
-A professional, modern web application for clinical documentation powered by AI. This platform helps healthcare providers streamline documentation, improve coding accuracy, and spend more time on patient care.A professional, modern web application for clinical documentation powered by AI. This platform helps healthcare providers streamline documentation, improve coding accuracy, and spend more time on patient care.
+- Smart Transcription (demo)
+- NLP & Auto-coding (simulated ICD-10/CPT suggestions with confidence scores)
+- Predictive Analytics (risk visualization and readmission risk)
+- Interactive Demo with specialty-specific results
+- Responsive, accessible, and professional UI
 
+## Project Structure
 
+ClinReport/
+├── index.html
+├── demo.html
+├── contact.html
+├── product.html
+├── how-it-works.html
+├── use-cases.html
+├── pricing.html
+├── resources.html
+├── security.html
+├── about.html
+├── css/
+│   └── styles.css
+└── js/
+    └── main.js
 
-## 🚀 Features## 🚀 Features
+## Demo Page
 
+- Three pre-loaded clinical notes: ER — Chest Pain, Diabetes follow-up, Pediatric URI
+- Specialty selector (Emergency Medicine, Cardiology, Family Medicine, Pediatrics, Internal Medicine)
+- Dynamic results generated on "Process Note": entities, suggested codes, risk assessments
 
+## Getting Started
 
-- **Smart Transcription** - Real-time voice-to-text with medical terminology understanding- **Smart Transcription** - Real-time voice-to-text with medical terminology understanding
+1. Clone or download the repo.
+2. Open `index.html` (or `demo.html`) in your browser.
+3. On the Demo page: select a note, choose a specialty, click "Process Note".
 
-- **NLP & Auto-coding** - Automated ICD-10/CPT code suggestions with confidence scores- **NLP & Auto-coding** - Automated ICD-10/CPT code suggestions with confidence scores
+No build process required — static site.
 
-- **Predictive Analytics** - Risk stratification and readmission prediction- **Predictive Analytics** - Risk stratification and readmission prediction
+## Customization
 
-- **Interactive Demo** - Live playground to test AI capabilities with specialty-specific results- **Interactive Demo** - Live playground to test AI capabilities with specialty-specific results
+- Edit colors and theme in `css/styles.css` (CSS variables)
+- Demo behavior and result simulation live in `js/main.js`
 
-- **Responsive Design** - Works seamlessly on desktop, tablet, and mobile devices- **Responsive Design** - Works seamlessly on desktop, tablet, and mobile devices
+## Future Enhancements
 
-- **Professional UI** - Modern, clean interface with smooth animations and accessibility features- **Professional UI** - Modern, clean interface with smooth animations and accessibility features
+- Backend API and secure AI/NLP integration
+- Authentication and role-based access
+- EHR integrations and production readiness
 
+## Contact
 
+- Email: hello@clinreport.ai
 
-## 📁 Project Structure## 📁 Project Structure
-
-
-
-``````
-
-ClinReport/ClinReport/
-
-├── index.html          # Homepage with hero, features, and testimonials├── index.html          # Homepage with hero, features, and testimonials
-
-├── demo.html           # Interactive demo with specialty-specific AI results├── demo.html           # Interactive demo with specialty-specific AI results
-
-├── contact.html        # Contact form with meeting scheduler├── contact.html        # Contact form with meeting scheduler
-
-├── product.html        # Product features overview├── product.html        # Product features overview
-
-├── how-it-works.html   # Detailed workflow explanation├── how-it-works.html   # Detailed workflow explanation
-
-├── use-cases.html      # Clinical use cases across specialties├── use-cases.html      # Clinical use cases across specialties
-
-├── pricing.html        # Pricing tiers and plans├── pricing.html        # Pricing tiers and plans
-
-├── resources.html      # Documentation and learning resources├── resources.html      # Documentation and learning resources
-
-├── security.html       # Security and compliance information├── security.html       # Security and compliance information
-
-├── about.html          # Company information and team├── about.html          # Company information and team
-
-├── css/├── css/
-
-│   └── styles.css      # Main stylesheet with responsive design│   └── styles.css      # Main stylesheet with responsive design
-
-└── js/└── js/
-
-    └── main.js         # Main JavaScript with interactive features    └── main.js         # Main JavaScript with interactive features
-
-``````
-
-
-
-## 🎨 Design System## 🎨 Design System
-
-
-
-### Colors### Colors
-
-- **Primary**: #667eea (Purple)
-
-- **Primary**: #667eea (Purple)- **Secondary**: #764ba2 (Dark Purple)
-
-- **Secondary**: #764ba2 (Dark Purple)- **Success**: #48bb78 (Green)
-
-- **Success**: #48bb78 (Green)- **Warning**: #ed8936 (Orange)
-
-- **Warning**: #ed8936 (Orange)- **Danger**: #f56565 (Red)
-
-- **Danger**: #f56565 (Red)
-
-### Typography
-
-### Typography- **Font Family**: Inter (Google Fonts)
-
-- **Weights**: 300, 400, 500, 600, 700, 800
-
-- **Font Family**: Inter (Google Fonts)
-
-- **Weights**: 300, 400, 500, 600, 700, 800### Components
-
-- Navigation bar with mobile menu
-
-### Components- Cards with hover effects
-
-- Buttons (primary, secondary, large)
-
-- Navigation bar with mobile menu- Forms with validation
-
-- Cards with hover effects- Modal dialogs
-
-- Buttons (primary, secondary, large)- Tabs
-
-- Forms with validation- Progress bars
-
-- Modal dialogs- Badges
-
-- Tabs- Statistics cards
-
-- Progress bars
-
-- Badges## 🛠️ Technologies Used
-
-- Statistics cards
-
-- Entity tags- **HTML5** - Semantic markup
-
-- Code suggestion cards- **CSS3** - Custom styling with CSS Grid & Flexbox
-
-- **JavaScript** - Interactive features and animations
-
-## 🛠️ Technologies Used- **Font Awesome** - Icon library
-
-- **Google Fonts** - Inter font family
-
-- **HTML5** - Semantic markup
-
-- **CSS3** - Custom styling with CSS Grid & Flexbox## 📱 Responsive Design
-
-- **JavaScript** - Interactive features and animations
-
-- **Font Awesome** - Icon libraryThe application is fully responsive and optimized for:
-
-- **Google Fonts** - Inter font family- Desktop (1280px+)
-
-- Tablet (768px - 1279px)
-
-## 📱 Responsive Design- Mobile (< 768px)
-
-
-
-The application is fully responsive and optimized for:## 🎯 Key Pages
-
-
-
-- Desktop (1280px+)### Homepage (index.html)
-
-- Tablet (768px - 1279px)- Hero section with value proposition
-
-- Mobile (< 768px)- Statistics showcase
-
-- Problem statement
-
-## 🎯 Key Pages- Feature overview
-
-- Testimonials
-
-### Homepage (index.html)- Call-to-action
-
-
-
-- Hero section with value proposition### Demo Page (demo.html)
-
-- Statistics showcase- Interactive clinical note input with 3 pre-loaded demo cases
-
-- Problem statement  - ER — Chest pain (cardiac emergency scenario)
-
-- Feature overview  - Primary Care — Diabetes follow-up (chronic disease management)
-
-- Testimonials  - Telehealth — Pediatric URI (remote consultation)
-
-- Call-to-action- Specialty selector (Emergency Medicine, Cardiology, Family Medicine, etc.)
-
-- Real-time AI processing simulation with varying processing times
-
-### Demo Page (demo.html)- Dynamic entity extraction display with confidence scores
-
-- ICD-10 code suggestions that adapt based on selected specialty
-
-- Interactive clinical note input with 3 pre-loaded demo cases:- Risk assessment visualization with progress bars
-
-  - ER — Chest pain (cardiac emergency scenario)- Animated results that change based on note type and specialty selection
-
-  - Primary Care — Diabetes follow-up (chronic disease management)
-
-  - Telehealth — Pediatric URI (remote consultation)### Contact Page (contact.html)
-
-- Specialty selector (Emergency Medicine, Cardiology, Family Medicine, etc.)- Comprehensive contact form
-
-- Real-time AI processing simulation with varying processing times- Meeting type selection
-
-- Dynamic entity extraction display with confidence scores- Contact information
-
-- ICD-10 code suggestions that adapt based on selected specialty- FAQ section
-
-- Risk assessment visualization with progress bars
-
-- Animated results that change based on note type and specialty selection## 🚀 Getting Started
-
-
-
-### Contact Page (contact.html)1. **Clone or download** the project
-
-2. **Open index.html** in your web browser
-
-- Comprehensive contact form3. **Navigate** through the site using the menu
-
-- Meeting type selection
-
-- Preferred time schedulingNo build process or dependencies required! This is a static website that runs directly in the browser.
-
-- Contact information
-
-- FAQ section## 💡 Usage
-
-
-
-## 🚀 Getting Started### Testing the Demo
-
-
-
-1. **Clone or download** the project1. Navigate to the **Demo** page
-
-2. **Open index.html** in your web browser2. Select a pre-loaded clinical note or enter your own
-
-3. **Navigate** through the site using the menu3. Choose a medical specialty from the dropdown
-
-4. Click "Process Note"
-
-No build process or dependencies required! This is a static website that runs directly in the browser.5. View the AI-generated results including:
-
-   - Extracted medical entities with confidence scores
-
-## 💡 Usage   - Suggested ICD-10 codes tailored to the specialty
-
-   - Risk assessments with visual progress indicators
-
-### Testing the Demo
-
-**Note:** Different specialties will produce different code suggestions and confidence scores, simulating how AI can adapt to clinical context.
-
-1. Navigate to the **Demo** page
-
-2. Select a pre-loaded clinical note or enter your own### Submitting a Contact Form
-
-3. Choose a medical specialty from the dropdown
-
-4. Click "Process Note"1. Navigate to the **Contact** page
-
-5. View the AI-generated results including:2. Fill in all required fields (marked with *)
-
-   - Extracted medical entities with confidence scores3. Select your meeting type and preferred time
-
-   - Suggested ICD-10 codes tailored to the specialty4. Click "Submit Request"
-
-   - Risk assessments with visual progress indicators5. A success notification will appear
-
-
-
-**Note:** Different specialties will produce different code suggestions and confidence scores, simulating how AI can adapt to clinical context.## 🎨 Customization
-
-
-
-### Submitting a Contact Form### Changing Colors
-
-Edit the CSS variables in `css/styles.css`:
-
-1. Navigate to the **Contact** page```css
-
-2. Fill in all required fields (marked with *):root {
-
-3. Select your meeting type and preferred time    --primary-color: #667eea;
-
-4. Click "Submit Request"    --secondary-color: #764ba2;
-
-5. A success notification will appear    /* ... other colors */
-
-}
-
-## 🎨 Customization```
-
-
-
-### Changing Colors### Adding New Pages
-
-1. Create a new HTML file
-
-Edit the CSS variables in `css/styles.css`:2. Copy the navigation and footer from an existing page
-
-3. Add your content in the main section
-
-```css4. Link it in the navigation menu
-
-:root {
-
-    --primary-color: #667eea;### Modifying Animations
-
-    --secondary-color: #764ba2;Edit animation keyframes and durations in `css/styles.css`:
-
-    /* ... other colors */```css
-
-}@keyframes fadeIn {
-
-```    from { opacity: 0; transform: translateY(20px); }
-
-    to { opacity: 1; transform: translateY(0); }
-
-### Adding New Pages}
-
-```
-
-1. Create a new HTML file
-
-2. Copy the navigation and footer from an existing page## 📊 Features Implemented
-
-3. Add your content in the main section
-
-4. Link it in the navigation menu- ✅ Responsive navigation with mobile menu and ARIA accessibility
-
-- ✅ Smooth scroll navigation
-
-### Modifying Animations- ✅ Interactive demo with specialty-specific AI results
-
-- ✅ Dynamic results generation based on clinical note type
-
-Edit animation keyframes and durations in `css/styles.css`:- ✅ Form validation with real-time feedback
-
-- ✅ Notification system
-
-```css- ✅ Card hover effects with smooth transitions
-
-@keyframes fadeIn {- ✅ Animated progress bars for risk assessment
-
-    from { opacity: 0; transform: translateY(20px); }- ✅ Animated statistics counters
-
-    to { opacity: 1; transform: translateY(0); }- ✅ Entity extraction with confidence scoring
-
-}- ✅ ICD-10 code suggestions with specialty context
-
-```- ✅ Tab system for content organization
-
-- ✅ Modal dialogs ready for implementation
-
-## 📊 Features Implemented
-
-## 🔒 Security & Compliance
-
-- ✅ Responsive navigation with mobile menu and ARIA accessibility
-
-- ✅ Smooth scroll navigationThe platform highlights:
-
-- ✅ Interactive demo with specialty-specific AI results- HIPAA compliance readiness
-
-- ✅ Dynamic results generation based on clinical note type- SOC 2 Type II certification
-
-- ✅ Form validation with real-time feedback- End-to-end encryption
-
-- ✅ Notification system- Role-based access control
-
-- ✅ Card hover effects with smooth transitions- Comprehensive audit logs
-
-- ✅ Animated progress bars for risk assessment
-
-- ✅ Animated statistics counters## 📈 Performance
-
-- ✅ Entity extraction with confidence scoring
-
-- ✅ ICD-10 code suggestions with specialty context- Optimized CSS with minimal specificity
-
-- ✅ Tab system for content organization- Efficient JavaScript with event delegation
-
-- ✅ Modal dialogs ready for implementation- Lazy loading preparation
-
-- Intersection Observer for animations
-
-## 🔒 Security & Compliance- Responsive images ready
-
-
-
-The platform highlights:## 🌐 Browser Support
-
-
-
-- HIPAA compliance readiness- Chrome (latest)
-
-- SOC 2 Type II certification- Firefox (latest)
-
-- End-to-end encryption- Safari (latest)
-
-- Role-based access control- Edge (latest)
-
-- Comprehensive audit logs- Mobile browsers
-
-
-
-## 📈 Performance## 📝 Future Enhancements
-
-
-
-- Optimized CSS with minimal specificity- [ ] Add real backend API integration
-
-- Efficient JavaScript with event delegation- [ ] Implement actual AI/ML processing with NLP models
-
-- Lazy loading preparation- [ ] Add user authentication and authorization
-
-- Intersection Observer for animations- [ ] Create admin dashboard for analytics
-
-- Responsive images ready- [ ] Add multi-language support (Spanish, French, etc.)
-
-- [ ] Implement dark mode theme
-
-## 🌐 Browser Support- [ ] Add progressive web app (PWA) features
-
-- [ ] Include more interactive demo scenarios
-
-- Chrome (latest)- [ ] Add video tutorials and walkthroughs
-
-- Firefox (latest)- [ ] Integrate with EHR systems (Epic, Cerner, etc.)
-
-- Safari (latest)- [ ] Add voice input for clinical notes
-
-- Edge (latest)- [ ] Implement real-time collaboration features
-
-- Mobile browsers
-
-## 👥 Target Audience
-
-## 📝 Future Enhancements
-
-- Healthcare providers (physicians, nurses)
-
-- [ ] Add real backend API integration- Hospital administrators
-
-- [ ] Implement actual AI/ML processing with NLP models- IT directors in healthcare
-
-- [ ] Add user authentication and authorization- Practice managers
-
-- [ ] Create admin dashboard for analytics- Clinical decision-makers
-
-- [ ] Add multi-language support (Spanish, French, etc.)
-
-- [ ] Implement dark mode theme## 📧 Contact
-
-- [ ] Add progressive web app (PWA) features
-
-- [ ] Include more interactive demo scenariosFor questions or support:
-
-- [ ] Add video tutorials and walkthroughs- Email: hello@clinreport.ai
-
-- [ ] Integrate with EHR systems (Epic, Cerner, etc.)- Phone: +1 (555) 123-4567
-
-- [ ] Add voice input for clinical notes- Location: San Francisco, CA
-
-- [ ] Implement real-time collaboration features
-
-## 📄 License
-
-## 👥 Target Audience
-
-© 2024 ClinReport AI. All rights reserved.
-
-- Healthcare providers (physicians, nurses, PAs, NPs)
-
-- Hospital administrators---
-
-- IT directors in healthcare
-
-- Practice managers**Built with ❤️ for healthcare professionals worldwide**
-
-- Clinical decision-makers#   C l i n R e p o r t 
-
- 
-
-## 📧 Contact 
-
-For questions or support:
-
-- Email: [hello@clinreport.ai](mailto:hello@clinreport.ai)
-- Phone: +1 (555) 123-4567
-- Location: San Francisco, CA
-
-## 📄 License
+## License
 
 © 2024 ClinReport. All rights reserved.
 
----
-
-**Built with ❤️ for healthcare professionals worldwide**
+--- 
+**Built for healthcare professionals**
