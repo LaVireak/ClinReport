@@ -42,3 +42,6 @@ node_modules/
 *.bak
 *.backup
 *~
+ 
+# Ignore pictures folder (user images)
+picture/
