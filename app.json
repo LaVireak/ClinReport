@@ -26,7 +26,8 @@
     },
     "updates": {
       "enabled": true,
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
+      "url": "https://u.expo.dev/faeb4e5e-a74d-4b75-bc8b-de6522ffe558"
     },
     "runtimeVersion": {
       "policy": "sdkVersion"
@@ -34,6 +35,11 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "description": "Clinical documentation intelligence powered by AI"
+    "description": "Clinical documentation intelligence powered by AI",
+    "extra": {
+      "eas": {
+        "projectId": "faeb4e5e-a74d-4b75-bc8b-de6522ffe558"
+      }
+    }
   }
 }
