@@ -1,0 +1,23 @@
+// Color palette for ClinReport app
+export const colors = {
+  primary: '#667eea',
+  secondary: '#764ba2',
+  accent: '#f093fb',
+  textDark: '#1a202c',
+  textLight: '#718096',
+  bgLight: '#f7fafc',
+  success: '#48bb78',
+  warning: '#ed8936',
+  danger: '#f56565',
+  white: '#ffffff',
+  black: '#000000',
+  gray100: '#f7fafc',
+  gray200: '#edf2f7',
+  gray300: '#e2e8f0',
+  gray400: '#cbd5e0',
+  gray500: '#a0aec0',
+  gray600: '#718096',
+  gray700: '#4a5568',
+  gray800: '#2d3748',
+  gray900: '#1a202c',
+};

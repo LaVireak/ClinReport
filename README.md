@@ -1,291 +1,151 @@
-# ClinReport - Clinical Documentation Platform 🏥
+# ClinReport Mobile App
 
-[![Live Demo](https://img.shields.io/badge/demo-live-success)](https://LaVireak.github.io/ClinReport)
-[![License](https://img.shields.io/badge/license-proprietary-blue)](LICENSE)
-[![Version](https://img.shields.io/badge/version-1.0.0-brightgreen)](CHANGELOG)
+A React Native mobile application for clinical documentation intelligence, built with Expo.
 
-A modern static web app demonstrating clinical documentation features with an interactive AI-powered demo that simulates entity extraction, ICD-10/CPT code suggestions, and risk assessments.
+## 🚀 Features
 
-## ✨ Features
+- **Smart Transcription**: Real-time voice-to-text with medical terminology
+- **NLP & Auto-coding**: Automatic ICD/CPT code suggestions with confidence scores
+- **Predictive Analytics**: Risk stratification and clinical insights
+- **Interactive Demo**: Try the AI-powered clinical note analyzer
+- **Mobile-First Design**: Native iOS and Android experience
+- **Secure & Compliant**: HIPAA-ready architecture
 
-- 🎤 **Smart Transcription** - Voice-to-text with medical terminology
-- 🧠 **NLP & Auto-coding** - Real-time ICD-10/CPT suggestions with confidence scores
-- 📊 **Predictive Analytics** - Risk stratification and readmission prediction
-- 🔬 **Entity Extraction** - Identifies diagnoses, medications, procedures, and vitals
-- 📱 **Responsive Design** - Works on desktop, tablet, and mobile
-- ♿ **Accessible** - WCAG compliant with ARIA labels
-- 🎨 **Professional UI** - Modern gradient design with smooth animations
+## 📱 Running on Expo Go
 
-## 🚀 Live Demo
+### Prerequisites
 
-👉 **[View Live Site](https://LaVireak.github.io/ClinReport)**
+- Node.js (v16 or higher)
+- Expo Go app installed on your phone:
+  - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
+  - [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
 
-Try the interactive demo with pre-loaded clinical notes:
-- ER — Chest Pain (Cardiac emergency)
-- Primary Care — Diabetes Follow-up
-- Telehealth — Pediatric URI
+### Installation
 
-## 📁 Project Structure
+1. Clone the repository and navigate to the directory:
 
-```text
-ClinReport/
-├── index.html              # Landing page
-├── demo.html               # Interactive demo
-├── contact.html            # Contact form
-├── product.html            # Product features
-├── how-it-works.html       # Platform workflow
-├── use-cases.html          # Specialty use cases
-├── pricing.html            # Pricing tiers
-├── resources.html          # Documentation
-├── security.html           # Security & compliance
-├── about.html              # About us
-├── css/
-│   └── styles.css          # Main stylesheet (746 lines)
-├── js/
-│   └── main.js             # Interactive functionality (650+ lines)
-├── robots.txt              # SEO configuration
-├── sitemap.xml             # Site structure
-└── README.md               # This file
+```bash
+cd "d:\Side Quest\ClinReport"
 ```
 
-## 🎯 Interactive Demo Features
+2. Install dependencies:
 
-The demo page includes real-time clinical note processing:
-
-### Entity Extraction
-Automatically identifies and categorizes:
-- 🩺 Diagnoses (Diabetes, Hypertension, STEMI, URI)
-- 💊 Medications (Aspirin, Metformin, Heparin)
-- 📊 Procedures (ECG, Troponin Test, HbA1c)
-- 🩸 Vitals (Blood Pressure, Fever, Heart Rate)
-
-### Code Suggestions
-Generates medical codes with confidence scores:
-- **ICD-10 Codes** - Diagnostic codes with rationales
-- **CPT Codes** - Procedure codes for billing
-- **Confidence Scores** - 75-96% accuracy ratings
-- **Visual Indicators** - Color-coded confidence bars
-
-### Risk Assessment
-Evaluates patient risks:
-- 🔴 **High Risk** - Acute cardiac events, STEMI
-- 🟡 **Medium Risk** - Poor glycemic control, medication non-adherence
-- 🟢 **Low Risk** - Routine monitoring, stable conditions
-
-## 💻 Getting Started
-
-### Local Development
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/LaVireak/ClinReport.git
-   cd ClinReport
-   ```
-
-2. **Open in browser**
-   ```bash
-   # Simply open index.html in your browser
-   # Or use a local server (optional):
-   python -m http.server 8000
-   # Then visit: http://localhost:8000
-   ```
-
-3. **Try the demo**
-   - Navigate to `demo.html`
-   - Select a pre-loaded clinical note
-   - Choose a specialty
-   - Click "Process Note"
-   - View extracted entities, suggested codes, and risk assessments
-
-### No Build Process Required ✓
-
-This is a static site - no npm, webpack, or build tools needed!
-
-## 🎨 Customization
-
-### Theme Colors
-Edit CSS variables in `css/styles.css`:
-```css
-:root {
-    --primary-color: #667eea;     /* Primary brand color */
-    --secondary-color: #764ba2;   /* Secondary brand color */
-    --success-color: #48bb78;     /* Success indicators */
-    --warning-color: #ed8936;     /* Warning indicators */
-    --danger-color: #f56565;      /* Error/danger indicators */
-}
+```bash
+npm install
 ```
 
-### Demo Logic
-Customize entity extraction and code suggestions in `js/main.js`:
-- `extractEntities()` - Add new medical terms
-- `suggestCodes()` - Add ICD-10/CPT codes
-- `assessRisks()` - Modify risk criteria
+### Running the App
 
-## 🌐 Deploying to GitHub Pages
+1. Start the Expo development server:
+```bash
+npm start
+```
 
-### Step-by-Step Guide
+2. A QR code will appear in your terminal and browser
 
-1. **Create a GitHub Repository**
-   ```bash
-   # Initialize git (if not already done)
-   git init
-   git add .
-   git commit -m "Initial commit: ClinReport v1.0"
-   ```
+3. **On your phone:**
+   - **iOS**: Open the Camera app and scan the QR code
+   - **Android**: Open Expo Go app and scan the QR code
 
-2. **Push to GitHub**
-   ```bash
-   # Add your GitHub repository as remote
-   git remote add origin https://github.com/LaVireak/ClinReport.git
-   git branch -M main
-   git push -u origin main
-   ```
+4. The app will load on your phone!
 
-3. **Enable GitHub Pages**
-   - Go to your repository on GitHub
-   - Click **Settings** (top navigation)
-   - Scroll down to **Pages** (left sidebar)
-   - Under **Source**, select `main` branch
-   - Select `/ (root)` folder
-   - Click **Save**
+### Alternative Commands
 
-4. **Wait for Deployment** (1-2 minutes)
-   - GitHub will build and deploy your site
-   - Your site will be live at: `https://LaVireak.github.io/ClinReport`
+- Start with Android emulator: `npm run android`
+- Start with iOS simulator (Mac only): `npm run ios`
+- Start web version: `npm run web`
 
-5. **Verify Deployment**
-   - Visit the URL provided by GitHub Pages
-   - Test all pages and demo functionality
-   - Check mobile responsiveness
+## 📂 Project Structure
 
-### Custom Domain (Optional)
+```
+ClinReportApp/
+├── src/
+│   ├── screens/          # App screens
+│   │   ├── HomeScreen.js
+│   │   ├── ProductScreen.js
+│   │   ├── DemoScreen.js
+│   │   ├── ContactScreen.js
+│   │   ├── PricingScreen.js
+│   │   └── AboutScreen.js
+│   ├── styles/           # Global styles
+│   │   ├── colors.js
+│   │   └── globalStyles.js
+├── App.js               # Main app & navigation
+├── app.json            # Expo configuration
+└── package.json        # Dependencies
+```
 
-1. **Purchase a domain** (e.g., clinreport.ai)
-2. **Configure DNS** with your domain provider:
-   ```
-   Type: A
-   Host: @
-   Value: 185.199.108.153
-   Value: 185.199.109.153
-   Value: 185.199.110.153
-   Value: 185.199.111.153
-   
-   Type: CNAME
-   Host: www
-   Value: LaVireak.github.io
-   ```
-3. **Add CNAME file** to repository root:
-   ```bash
-   echo "clinreport.ai" > CNAME
-   git add CNAME
-   git commit -m "Add custom domain"
-   git push
-   ```
-4. **Update GitHub Settings**
-   - Go to Settings → Pages
-   - Enter your custom domain
-   - Enable "Enforce HTTPS"
+## 🛠️ Tech Stack
 
-## 🔧 Technology Stack
+- **React Native**: Cross-platform mobile framework
+- **Expo**: Development platform
+- **React Navigation**: Navigation library
+- **Expo Linear Gradient**: Gradient components
 
-| Category | Technology |
-|----------|-----------|
-| **Frontend** | HTML5, CSS3, JavaScript (ES6+) |
-| **Styling** | Custom CSS with CSS Variables |
-| **Icons** | Font Awesome 6.4.0 |
-| **Typography** | Inter font family (Google Fonts) |
-| **Architecture** | Static site, no build process |
-| **Hosting** | GitHub Pages (recommended) |
+## 🎨 Screens
 
-## 📱 Browser Support
+1. **Home**: Hero section with features overview
+2. **Product**: Detailed feature descriptions
+3. **Demo**: Interactive demonstrations
+4. **Contact**: Contact form for inquiries
+5. **Pricing**: Pricing tiers and plans
+6. **About**: Company information
 
-| Browser | Support |
-|---------|---------|
-| Chrome/Edge | ✅ Latest 2 versions |
-| Firefox | ✅ Latest 2 versions |
-| Safari | ✅ Latest 2 versions |
-| Mobile Safari | ✅ iOS 12+ |
-| Chrome Mobile | ✅ Android 8+ |
+## 📝 Development Notes
 
-## 🔒 Security & Compliance
+### Converting from Web to Mobile
 
-- 🛡️ **HIPAA Ready** - Designed for healthcare compliance
-- 🔐 **SOC 2 Type II** - Enterprise security standards
-- 🔒 **End-to-End Encryption** - Data protection (when backend is added)
-- 📋 **Audit Logs** - Complete activity tracking (future)
+This app was converted from a web-based HTML/CSS/JS application to React Native:
 
-## 🚀 Performance
+- HTML elements → React Native components (View, Text, ScrollView, etc.)
+- CSS styles → StyleSheet API
+- Web navigation → React Navigation
+- Icons (Font Awesome) → Emoji/Unicode characters
+- Forms → React Native TextInput components
 
-- ⚡ **Lighthouse Score**: 90+ (Performance, Accessibility, Best Practices, SEO)
-- 📦 **Page Size**: < 500KB (excluding CDN resources)
-- 🚄 **Load Time**: < 2 seconds on 3G
-- 🎯 **Core Web Vitals**: All metrics in green
+### Key Differences from Web Version
 
-## 📊 Project Statistics
+- No direct HTML/CSS - uses React Native components
+- Touch-optimized UI elements
+- Native mobile navigation patterns
+- Optimized for smaller screens
+- Native performance
 
-- **Total Pages**: 10 HTML files
-- **CSS Lines**: 746 lines
-- **JavaScript Lines**: 650+ lines
-- **Demo Notes**: 3 pre-loaded clinical scenarios
-- **Suggested Codes**: Dynamic ICD-10 + CPT generation
-- **Entity Types**: 10+ medical entity categories
+## 🔧 Troubleshooting
 
-## 🛠️ Future Enhancements
+### QR Code won't scan
+- Make sure your phone and computer are on the same Wi-Fi network
+- Try the "Tunnel" connection mode in Expo
 
-### Phase 1 (MVP)
-- [ ] Backend API integration
-- [ ] Real AI/NLP processing (OpenAI, Azure Cognitive Services)
-- [ ] User authentication and authorization
-- [ ] Database for storing clinical notes
+### App won't load
+- Clear the Expo Go app cache
+- Restart the development server
+- Check for error messages in the terminal
 
-### Phase 2 (Scale)
-- [ ] EHR integrations (Epic, Cerner, Allscripts)
-- [ ] Role-based access control (RBAC)
-- [ ] Multi-language support
-- [ ] Advanced analytics dashboard
+### Styling issues
+- React Native uses flexbox by default
+- Some CSS properties work differently (e.g., no `display: grid`)
 
-### Phase 3 (Enterprise)
-- [ ] FHIR API compliance
-- [ ] HL7 integration
-- [ ] Mobile app (iOS/Android)
-- [ ] Voice recognition for real-time transcription
+## 🚀 Next Steps
 
-## 🤝 Contributing
+To publish your app:
 
-This is a proprietary project. For inquiries about contributing or partnership opportunities, please contact us.
+1. Build for production:
+```bash
+expo build:android
+expo build:ios
+```
 
-## 📞 Contact
-
-- **Email**: <hello@clinreport.ai>
-- **Website**: [clinreport.ai](https://clinreport.ai)
-- **GitHub**: [@LaVireak](https://github.com/LaVireak)
+2. Submit to app stores:
+```bash
+expo submit:android
+expo submit:ios
+```
 
 ## 📄 License
 
-© 2025 ClinReport. All rights reserved.
+© 2025 ClinReport AI. All rights reserved.
 
-This is proprietary software. Unauthorized copying, modification, distribution, or use of this software is strictly prohibited.
+## 🤝 Support
 
-## 🙏 Acknowledgments
-
-- Font Awesome for icons
-- Google Fonts for Inter typography
-- Healthcare professionals who provided feedback
-- Open source community for inspiration
-
-## 📚 Documentation
-
-For detailed documentation, visit:
-- **Getting Started**: See this README
-- **API Documentation**: Coming soon
-- **Integration Guide**: Coming soon
-- **Security Whitepaper**: Available on request
-
----
-
-**Built with ❤️ for healthcare professionals worldwide**
-
-🌟 **Star this repo** if you find it helpful!
-
-Last Updated: October 3, 2025
-
+For support, email contact@clinreport.com or visit our website.
