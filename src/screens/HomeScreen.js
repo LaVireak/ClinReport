@@ -3,79 +3,100 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
+import { FadeInView, ScaleInView, SlideInView } from '../components/AnimatedView';
 
 const HomeScreen = ({ navigation }) => {
   return (
     <ScrollView style={globalStyles.container} contentContainerStyle={globalStyles.scrollContainer}>
       {/* Hero Section */}
       <View style={[globalStyles.section, styles.heroSection]}>
-        <View style={globalStyles.badge}>
-          <View style={styles.pulse} />
-          <Text style={globalStyles.badgeText}>Trusted by 500+ healthcare providers</Text>
-        </View>
+        <FadeInView duration={800}>
+          <View style={globalStyles.badge}>
+            <View style={styles.pulse} />
+            <Text style={globalStyles.badgeText}>Trusted by 500+ healthcare providers</Text>
+          </View>
+        </FadeInView>
 
-        <Text style={styles.heroTitle}>
-          Turn clinical notes into{'\n'}
-          <Text style={globalStyles.gradientText}>actionable care</Text> — faster,{'\n'}
-          safer, smarter.
-        </Text>
+        <SlideInView delay={300}>
+          <Text style={styles.heroTitle}>
+            Turn clinical notes into{'\n'}
+            <Text style={globalStyles.gradientText}>actionable care</Text> — faster,{'\n'}
+            safer, smarter.
+          </Text>
+        </SlideInView>
 
-        <Text style={styles.heroSubtitle}>
-          ClinReport automates medical reporting with EHR-friendly NLP, predictive analytics, and secure
-          cloud workflows—freeing clinicians from paperwork and turning records into outcomes.
-        </Text>
+        <FadeInView delay={500}>
+          <Text style={styles.heroSubtitle}>
+            ClinReport automates medical reporting with EHR-friendly NLP, predictive analytics, and secure
+            cloud workflows—freeing clinicians from paperwork and turning records into outcomes.
+          </Text>
+        </FadeInView>
 
         <View style={styles.buttonContainer}>
-          <TouchableOpacity
-            style={[globalStyles.buttonPrimary, styles.button]}
-            onPress={() => navigation.navigate('Contact')}
-          >
-            <Text style={globalStyles.buttonTextPrimary}>📧 Request Demo</Text>
-          </TouchableOpacity>
+          <ScaleInView delay={700}>
+            <TouchableOpacity
+              style={[globalStyles.buttonPrimary, styles.button]}
+              onPress={() => navigation.navigate('Contact')}
+            >
+              <Text style={globalStyles.buttonTextPrimary}>📧 Request Demo</Text>
+            </TouchableOpacity>
+          </ScaleInView>
 
-          <TouchableOpacity
-            style={[globalStyles.buttonSecondary, styles.button]}
-            onPress={() => navigation.navigate('Demo')}
-          >
-            <Text style={globalStyles.buttonTextSecondary}>▶️ Try Live Demo</Text>
-          </TouchableOpacity>
+          <ScaleInView delay={800}>
+            <TouchableOpacity
+              style={[globalStyles.buttonSecondary, styles.button]}
+              onPress={() => navigation.navigate('Demo')}
+            >
+              <Text style={globalStyles.buttonTextSecondary}>▶️ Try Live Demo</Text>
+            </TouchableOpacity>
+          </ScaleInView>
         </View>
 
         {/* Stats Grid */}
         <View style={styles.statsGrid}>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>85%</Text>
-            <Text style={styles.statLabel}>Reduction in documentation time</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>94%</Text>
-            <Text style={styles.statLabel}>Coding accuracy improvement</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>60%</Text>
-            <Text style={styles.statLabel}>Faster patient turnaround</Text>
-          </View>
-          <View style={styles.statCard}>
-            <Text style={styles.statNumber}>99.9%</Text>
-            <Text style={styles.statLabel}>Uptime guarantee</Text>
-          </View>
+          <ScaleInView delay={900}>
+            <View style={styles.statCard}>
+              <Text style={styles.statNumber}>85%</Text>
+              <Text style={styles.statLabel}>Reduction in documentation time</Text>
+            </View>
+          </ScaleInView>
+          <ScaleInView delay={1000}>
+            <View style={styles.statCard}>
+              <Text style={styles.statNumber}>94%</Text>
+              <Text style={styles.statLabel}>Coding accuracy improvement</Text>
+            </View>
+          </ScaleInView>
+          <ScaleInView delay={1100}>
+            <View style={styles.statCard}>
+              <Text style={styles.statNumber}>60%</Text>
+              <Text style={styles.statLabel}>Faster patient turnaround</Text>
+            </View>
+          </ScaleInView>
+          <ScaleInView delay={1200}>
+            <View style={styles.statCard}>
+              <Text style={styles.statNumber}>99.9%</Text>
+              <Text style={styles.statLabel}>Uptime guarantee</Text>
+            </View>
+          </ScaleInView>
         </View>
 
         {/* Trust Badges */}
-        <View style={styles.trustBadges}>
-          <View style={styles.trustBadge}>
-            <Text style={styles.badgeIcon}>🛡️</Text>
-            <Text style={styles.trustBadgeText}>HIPAA Ready</Text>
+        <FadeInView delay={1300}>
+          <View style={styles.trustBadges}>
+            <View style={styles.trustBadge}>
+              <Text style={styles.badgeIcon}>🛡️</Text>
+              <Text style={styles.trustBadgeText}>HIPAA Ready</Text>
+            </View>
+            <View style={styles.trustBadge}>
+              <Text style={styles.badgeIcon}>🏆</Text>
+              <Text style={styles.trustBadgeText}>SOC 2 Type II</Text>
+            </View>
+            <View style={styles.trustBadge}>
+              <Text style={styles.badgeIcon}>📅</Text>
+              <Text style={styles.trustBadgeText}>30-day free trial</Text>
+            </View>
           </View>
-          <View style={styles.trustBadge}>
-            <Text style={styles.badgeIcon}>🏆</Text>
-            <Text style={styles.trustBadgeText}>SOC 2 Type II</Text>
-          </View>
-          <View style={styles.trustBadge}>
-            <Text style={styles.badgeIcon}>📅</Text>
-            <Text style={styles.trustBadgeText}>30-day free trial</Text>
-          </View>
-        </View>
+        </FadeInView>
       </View>
 
       {/* Problem Statement */}

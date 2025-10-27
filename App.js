@@ -13,6 +13,11 @@ import AboutScreen from './src/screens/AboutScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import DoctorDashboard from './src/screens/DoctorDashboard';
 import PatientDashboard from './src/screens/PatientDashboard';
+import MapScreen from './src/screens/MapScreen';
+import DoctorRecommendationScreen from './src/screens/DoctorRecommendationScreen';
+import SubscriptionScreen from './src/screens/SubscriptionScreen';
+import EmergencyScreen from './src/screens/EmergencyScreen';
+import HospitalDetailScreen from './src/screens/HospitalDetailScreen';
 
 import { colors } from './src/styles/colors';
 import { PatientDataProvider } from './src/context/PatientDataContext';
@@ -168,6 +173,41 @@ export default function App() {
             headerShown: false,
           }} 
         />
+        <Stack.Screen 
+          name="MapScreen" 
+          component={MapScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="DoctorRecommendation" 
+          component={DoctorRecommendationScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="Subscription" 
+          component={SubscriptionScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="Emergency" 
+          component={EmergencyScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
+        <Stack.Screen 
+          name="HospitalDetail" 
+          component={HospitalDetailScreen} 
+          options={{ 
+            headerShown: false,
+          }} 
+        />
       </Stack.Navigator>
       </NavigationContainer>
     </PatientDataProvider>
@@ -175,7 +215,14 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
-  logoContainer: { marginLeft: 0 },
+  logoContainer: { 
+    marginLeft: 0,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
+  },
   logo: {
     fontSize: 24,
     fontWeight: '700',
@@ -185,20 +232,27 @@ const styles = StyleSheet.create({
     height: 40,
     textAlign: 'center',
     lineHeight: 40,
-    borderRadius: 10,
+    borderRadius: 12,
     overflow: 'hidden',
   },
   menuButton: {
     backgroundColor: colors.primary,
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 6,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
     justifyContent: 'center',
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 2,
   },
   signInButton: {
     backgroundColor: colors.white,
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: colors.primary,
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
   },
   menuButtonText: {
     color: colors.white,
@@ -210,7 +264,7 @@ const styles = StyleSheet.create({
   },
   headerTitleText: {
     fontWeight: '700',
-    fontSize: 18,
+    fontSize: 20,
     color: colors.textDark,
     marginLeft: 12,
   },
@@ -221,13 +275,18 @@ const styles = StyleSheet.create({
   },
   homeHeaderSafeArea: {
     backgroundColor: colors.white,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
   homeHeaderContent: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 16,
-    paddingVertical: 12,
+    paddingVertical: 14,
     borderBottomWidth: 0,
     backgroundColor: colors.white,
   },
@@ -243,6 +302,6 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   headerButton: {
-    marginLeft: 8,
+    marginLeft: 10,
   },
 });

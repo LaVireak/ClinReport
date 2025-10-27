@@ -1,14 +1,21 @@
 // Color palette for ClinReport app
 export const colors = {
   primary: '#667eea',
+  primaryLight: '#8899f2',
+  primaryDark: '#5568d3',
   secondary: '#764ba2',
   accent: '#f093fb',
   textDark: '#1a202c',
   textLight: '#718096',
   bgLight: '#f7fafc',
   success: '#48bb78',
+  successLight: '#68d391',
   warning: '#ed8936',
+  warningLight: '#f6ad55',
   danger: '#f56565',
+  dangerLight: '#fc8181',
+  info: '#4299e1',
+  infoLight: '#63b3ed',
   white: '#ffffff',
   black: '#000000',
   gray100: '#f7fafc',
@@ -20,4 +27,29 @@ export const colors = {
   gray700: '#4a5568',
   gray800: '#2d3748',
   gray900: '#1a202c',
+  
+  // Shadow colors for better depth
+  shadow: {
+    small: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.1,
+      shadowRadius: 4,
+      elevation: 2,
+    },
+    medium: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.15,
+      shadowRadius: 8,
+      elevation: 4,
+    },
+    large: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 6 },
+      shadowOpacity: 0.2,
+      shadowRadius: 12,
+      elevation: 6,
+    },
+  },
 };
