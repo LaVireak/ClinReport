@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import { View } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 import Animated, {
+  cancelAnimation,
   useAnimatedStyle,
   useSharedValue,
   withSpring,
@@ -12,8 +14,16 @@ import Animated, {
 // Fade In Animation
 export const FadeInView = ({ children, duration = 600, delay = 0, style }) => {
   const opacity = useSharedValue(0);
+  const isFocused = useIsFocused(); // restart animation only when the hosting screen is active
 
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(opacity);
+      opacity.value = 0;
+      return;
+    }
+
+    opacity.value = 0;
     opacity.value = withDelay(
       delay,
       withTiming(1, {
@@ -21,7 +31,9 @@ export const FadeInView = ({ children, duration = 600, delay = 0, style }) => {
         easing: Easing.out(Easing.ease),
       })
     );
-  }, []);
+
+    return () => cancelAnimation(opacity);
+  }, [delay, duration, isFocused, opacity]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     opacity: opacity.value,
@@ -34,8 +46,19 @@ export const FadeInView = ({ children, duration = 600, delay = 0, style }) => {
 export const SlideInView = ({ children, duration = 500, delay = 0, style }) => {
   const translateY = useSharedValue(50);
   const opacity = useSharedValue(0);
+  const isFocused = useIsFocused(); // avoid animating while the screen is blurred
 
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(translateY);
+      cancelAnimation(opacity);
+      translateY.value = 50;
+      opacity.value = 0;
+      return;
+    }
+
+    translateY.value = 50;
+    opacity.value = 0;
     translateY.value = withDelay(
       delay,
       withSpring(0, {
@@ -50,7 +73,12 @@ export const SlideInView = ({ children, duration = 500, delay = 0, style }) => {
         easing: Easing.out(Easing.ease),
       })
     );
-  }, []);
+
+    return () => {
+      cancelAnimation(translateY);
+      cancelAnimation(opacity);
+    };
+  }, [delay, duration, isFocused, opacity, translateY]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: translateY.value }],
@@ -64,8 +92,19 @@ export const SlideInView = ({ children, duration = 500, delay = 0, style }) => {
 export const ScaleInView = ({ children, duration = 400, delay = 0, style }) => {
   const scale = useSharedValue(0.8);
   const opacity = useSharedValue(0);
+  const isFocused = useIsFocused(); // keep spring work offscreen
 
   useEffect(() => {
+    if (!isFocused) {
+      cancelAnimation(scale);
+      cancelAnimation(opacity);
+      scale.value = 0.8;
+      opacity.value = 0;
+      return;
+    }
+
+    scale.value = 0.8;
+    opacity.value = 0;
     scale.value = withDelay(
       delay,
       withSpring(1, {
@@ -80,7 +119,12 @@ export const ScaleInView = ({ children, duration = 400, delay = 0, style }) => {
         easing: Easing.out(Easing.ease),
       })
     );
-  }, []);
+
+    return () => {
+      cancelAnimation(scale);
+      cancelAnimation(opacity);
+    };
+  }, [delay, duration, isFocused, opacity, scale]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
