@@ -52,6 +52,7 @@ export default function FloatingChatButton() {
             transform: [{ scale: scaleAnim }],
           },
         ]}
+        pointerEvents="box-none"
       >
         <TouchableOpacity
           onPress={openChat}
@@ -120,6 +121,10 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 8,
+    ...(Platform.OS === 'web' && {
+      position: 'fixed',
+      pointerEvents: 'auto',
+    }),
   },
   button: {
     width: 60,

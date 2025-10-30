@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Platform } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
@@ -19,16 +19,16 @@ const HomeScreen = ({ navigation }) => {
 
         <SlideInView delay={300}>
           <Text style={styles.heroTitle}>
-            Turn clinical notes into{'\n'}
-            <Text style={globalStyles.gradientText}>actionable care</Text> — faster,{'\n'}
-            safer, smarter.
+            Your Personal{'\n'}
+            <Text style={globalStyles.gradientText}>AI Health Assistant</Text>{'\n'}
+            Always Ready to Help
           </Text>
         </SlideInView>
 
         <FadeInView delay={500}>
           <Text style={styles.heroSubtitle}>
-            ClinReport automates medical reporting with EHR-friendly NLP, predictive analytics, and secure
-            cloud workflows—freeing clinicians from paperwork and turning records into outcomes.
+            Track your health daily, get AI-powered insights, and create professional medical reports
+            ready to share with doctors—making healthcare accessible for everyone in Cambodia.
           </Text>
         </FadeInView>
 
@@ -38,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
               style={[globalStyles.buttonPrimary, styles.button]}
               onPress={() => navigation.navigate('Contact')}
             >
-              <Text style={globalStyles.buttonTextPrimary}>📧 Request Demo</Text>
+              <Text style={globalStyles.buttonTextPrimary}>Request Demo</Text>
             </TouchableOpacity>
           </ScaleInView>
 
@@ -47,7 +47,7 @@ const HomeScreen = ({ navigation }) => {
               style={[globalStyles.buttonSecondary, styles.button]}
               onPress={() => navigation.navigate('Demo')}
             >
-              <Text style={globalStyles.buttonTextSecondary}>▶️ Try Live Demo</Text>
+              <Text style={globalStyles.buttonTextSecondary}>Try Live Demo</Text>
             </TouchableOpacity>
           </ScaleInView>
         </View>
@@ -56,126 +56,206 @@ const HomeScreen = ({ navigation }) => {
         <View style={styles.statsGrid}>
           <ScaleInView delay={900}>
             <View style={styles.statCard}>
-              <Text style={styles.statNumber}>85%</Text>
-              <Text style={styles.statLabel}>Reduction in documentation time</Text>
+              <Text style={styles.statNumber}>24/7</Text>
+              <Text style={styles.statLabel}>AI Health Assistant Available</Text>
             </View>
           </ScaleInView>
           <ScaleInView delay={1000}>
             <View style={styles.statCard}>
-              <Text style={styles.statNumber}>94%</Text>
-              <Text style={styles.statLabel}>Coding accuracy improvement</Text>
+              <Text style={styles.statNumber}>1-Tap</Text>
+              <Text style={styles.statLabel}>Generate Doctor Reports</Text>
             </View>
           </ScaleInView>
           <ScaleInView delay={1100}>
             <View style={styles.statCard}>
-              <Text style={styles.statNumber}>60%</Text>
-              <Text style={styles.statLabel}>Faster patient turnaround</Text>
+              <Text style={styles.statNumber}>Free</Text>
+              <Text style={styles.statLabel}>Basic Health Tracking</Text>
             </View>
           </ScaleInView>
           <ScaleInView delay={1200}>
             <View style={styles.statCard}>
-              <Text style={styles.statNumber}>99.9%</Text>
-              <Text style={styles.statLabel}>Uptime guarantee</Text>
+              <Text style={styles.statNumber}>Smart</Text>
+              <Text style={styles.statLabel}>AI-Powered Insights</Text>
             </View>
           </ScaleInView>
         </View>
 
-        {/* Trust Badges */}
+        {/* Key Features Badges */}
         <FadeInView delay={1300}>
           <View style={styles.trustBadges}>
             <View style={styles.trustBadge}>
-              <Text style={styles.badgeIcon}>🛡️</Text>
-              <Text style={styles.trustBadgeText}>HIPAA Ready</Text>
+              <Text style={styles.badgeIcon}>🤖</Text>
+              <Text style={styles.trustBadgeText}>AI Health Agent</Text>
             </View>
             <View style={styles.trustBadge}>
-              <Text style={styles.badgeIcon}>🏆</Text>
-              <Text style={styles.trustBadgeText}>SOC 2 Type II</Text>
+              <Text style={styles.badgeIcon}>📝</Text>
+              <Text style={styles.trustBadgeText}>Smart Notes</Text>
             </View>
             <View style={styles.trustBadge}>
-              <Text style={styles.badgeIcon}>📅</Text>
-              <Text style={styles.trustBadgeText}>30-day free trial</Text>
+              <Text style={styles.badgeIcon}>🏥</Text>
+              <Text style={styles.trustBadgeText}>Doctor Ready</Text>
             </View>
           </View>
         </FadeInView>
       </View>
 
-      {/* Problem Statement */}
+      {/* AI Doctor Agent Section */}
+      <View style={[globalStyles.section, styles.aiAgentSection]}>
+        <FadeInView>
+          <View style={styles.aiAgentBadge}>
+            <View style={styles.aiPulse} />
+            <Text style={styles.aiAgentBadgeText}>AI-POWERED INTELLIGENCE</Text>
+          </View>
+          <Text style={[globalStyles.sectionTitle, styles.aiTitle]}>
+            Meet Your AI Medical Assistant
+          </Text>
+          <Text style={[globalStyles.sectionSubtitle, styles.aiSubtitle]}>
+            Like having an expert doctor available 24/7 in every patient dashboard
+          </Text>
+        </FadeInView>
+
+        <ScaleInView delay={300}>
+          <View style={[globalStyles.card, styles.aiFeatureCard]}>
+            <View style={styles.iconBox}>
+              <Text style={styles.iconBoxText}>🩺</Text>
+            </View>
+            <Text style={styles.aiFeatureTitle}>Clinical Intelligence</Text>
+            <Text style={styles.aiFeatureText}>
+              Analyzes patient data instantly, suggests diagnoses, and provides evidence-based recommendations—just like consulting with a senior physician.
+            </Text>
+          </View>
+        </ScaleInView>
+
+        <ScaleInView delay={400}>
+          <View style={[globalStyles.card, styles.aiFeatureCard]}>
+            <View style={styles.iconBox}>
+              <Text style={styles.iconBoxText}>💬</Text>
+            </View>
+            <Text style={styles.aiFeatureTitle}>Natural Conversations</Text>
+            <Text style={styles.aiFeatureText}>
+              Ask questions in plain language about symptoms, medications, lab results, or treatment plans—get instant, accurate medical insights.
+            </Text>
+          </View>
+        </ScaleInView>
+
+        <ScaleInView delay={500}>
+          <View style={[globalStyles.card, styles.aiFeatureCard]}>
+            <View style={styles.iconBox}>
+              <Text style={styles.iconBoxText}>⚡</Text>
+            </View>
+            <Text style={styles.aiFeatureTitle}>Real-Time Decision Support</Text>
+            <Text style={styles.aiFeatureText}>
+              Integrated into every patient dashboard, providing contextual assistance exactly when you need it—reducing errors and improving outcomes.
+            </Text>
+          </View>
+        </ScaleInView>
+
+        <FadeInView delay={600}>
+          <View style={styles.aiPowerHighlight}>
+            <Text style={styles.aiPowerIcon}>🚀</Text>
+            <Text style={styles.aiPowerText}>
+              Powered by advanced medical AI trained on millions of clinical cases
+            </Text>
+          </View>
+        </FadeInView>
+      </View>
+
+      {/* Problem Statement - Cambodia Healthcare Challenges */}
       <View style={[globalStyles.section, globalStyles.sectionLight]}>
-        <Text style={globalStyles.sectionTitle}>The Clinical Documentation Crisis</Text>
+        <Text style={globalStyles.sectionTitle}>Healthcare Challenges in Cambodia</Text>
         <Text style={globalStyles.sectionSubtitle}>
-          Clinicians spend hours on documentation, EHRs are clunky, and data remains locked in silos—reducing
-          time for patient care and increasing risk.
+          Limited access to quality healthcare, expensive hospital visits, and difficulty communicating 
+          with doctors—we're here to help bridge that gap.
         </Text>
 
         <View style={globalStyles.card}>
-          <Text style={styles.problemIcon}>⏱️</Text>
-          <Text style={styles.problemTitle}>Time Consuming</Text>
+          <View style={[styles.iconBox, { backgroundColor: '#fee2e2' }]}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>🏥</Text>
+          </View>
+          <Text style={styles.problemTitle}>Limited Hospital Access</Text>
           <Text style={styles.problemText}>
-            Clinicians spend up to 50% of their time on documentation instead of patient care.
+            Many people in Cambodia struggle to access hospitals regularly. Long distances, high costs, 
+            and limited facilities make it difficult to get proper medical care when needed.
           </Text>
         </View>
 
         <View style={globalStyles.card}>
-          <Text style={styles.problemIcon}>⚠️</Text>
-          <Text style={styles.problemTitle}>Error-Prone</Text>
+          <View style={[styles.iconBox, { backgroundColor: '#fef3c7' }]}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>💰</Text>
+          </View>
+          <Text style={styles.problemTitle}>Expensive Medical Visits</Text>
           <Text style={styles.problemText}>
-            Manual coding and data entry lead to mistakes that affect billing and patient outcomes.
+            Hospital visits and consultations can be costly. People often delay seeking help until 
+            conditions worsen, leading to more serious health issues.
           </Text>
         </View>
 
         <View style={globalStyles.card}>
-          <Text style={styles.problemIcon}>💾</Text>
-          <Text style={styles.problemTitle}>Data Silos</Text>
+          <View style={[styles.iconBox, { backgroundColor: '#dbeafe' }]}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>📋</Text>
+          </View>
+          <Text style={styles.problemTitle}>Poor Health Record Keeping</Text>
           <Text style={styles.problemText}>
-            Critical patient information is trapped in unstructured notes, making it difficult to analyze at scale.
+            Without organized health records, patients forget symptoms, medication history, and important 
+            details—making it harder for doctors to provide accurate diagnoses and treatment.
           </Text>
         </View>
       </View>
 
-      {/* Features Overview */}
+      {/* How ClinReport Helps */}
       <View style={globalStyles.section}>
-        <Text style={globalStyles.sectionTitle}>AI-Powered Clinical Intelligence</Text>
-        <Text style={globalStyles.sectionSubtitle}>Transform your clinical workflow with intelligent automation</Text>
+        <Text style={globalStyles.sectionTitle}>How ClinReport Can Help You</Text>
+        <Text style={globalStyles.sectionSubtitle}>Simple tools to take control of your health journey</Text>
 
         <View style={globalStyles.card}>
-          <Text style={styles.featureIcon}>🎤</Text>
-          <Text style={styles.featureTitle}>Smart Transcription</Text>
+          <View style={styles.iconBox}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>📝</Text>
+          </View>
+          <Text style={styles.featureTitle}>Track Your Health Daily</Text>
           <Text style={styles.featureText}>
-            Real-time voice-to-text with medical terminology understanding and SOAP formatting.
+            Log your symptoms, medications, sleep, exercise, and vital signs every day. Keep everything 
+            organized in one place, so you never forget important health information.
           </Text>
           <TouchableOpacity
             style={[globalStyles.buttonSecondary, styles.learnMoreButton]}
-            onPress={() => navigation.navigate('Product')}
+            onPress={() => navigation.navigate('Demo')}
           >
-            <Text style={globalStyles.buttonTextSecondary}>Learn More →</Text>
+            <Text style={globalStyles.buttonTextSecondary}>Try Demo →</Text>
           </TouchableOpacity>
         </View>
 
         <View style={globalStyles.card}>
-          <Text style={styles.featureIcon}>🧠</Text>
-          <Text style={styles.featureTitle}>NLP & Auto-coding</Text>
+          <View style={styles.iconBox}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>🤖</Text>
+          </View>
+          <Text style={styles.featureTitle}>AI Health Assistant 24/7</Text>
           <Text style={styles.featureText}>
-            Extract entities and suggest ICD/CPT codes with confidence scores automatically.
+            Ask health questions anytime and get instant AI-powered answers. Understand your symptoms, 
+            learn about medications, and get health advice—like having a doctor's assistant in your pocket.
           </Text>
           <TouchableOpacity
             style={[globalStyles.buttonSecondary, styles.learnMoreButton]}
-            onPress={() => navigation.navigate('Product')}
+            onPress={() => navigation.navigate('Demo')}
           >
-            <Text style={globalStyles.buttonTextSecondary}>Learn More →</Text>
+            <Text style={globalStyles.buttonTextSecondary}>Try Demo →</Text>
           </TouchableOpacity>
         </View>
 
         <View style={globalStyles.card}>
-          <Text style={styles.featureIcon}>📈</Text>
-          <Text style={styles.featureTitle}>Predictive Analytics</Text>
+          <View style={styles.iconBox}>
+            <Text style={[styles.iconBoxText, { fontSize: 36 }]}>📄</Text>
+          </View>
+          <Text style={styles.featureTitle}>Generate Doctor-Ready Reports</Text>
           <Text style={styles.featureText}>
-            Risk stratification, readmission prediction, and actionable clinical insights.
+            Create professional medical summaries from your daily health logs with one tap. 
+            Share clear, organized reports with doctors to get better diagnoses and treatment—no more 
+            forgetting important details during appointments.
           </Text>
           <TouchableOpacity
             style={[globalStyles.buttonSecondary, styles.learnMoreButton]}
-            onPress={() => navigation.navigate('Product')}
+            onPress={() => navigation.navigate('Demo')}
           >
-            <Text style={globalStyles.buttonTextSecondary}>Learn More →</Text>
+            <Text style={globalStyles.buttonTextSecondary}>Try Demo →</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -435,15 +515,29 @@ const styles = StyleSheet.create({
   badgeIcon: {
     fontSize: 24,
     marginRight: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
   },
   trustBadgeText: {
     fontSize: 16,
     fontWeight: '600',
     color: colors.textDark,
   },
+  iconBox: {
+    width: 64,
+    height: 64,
+    borderRadius: 16,
+    backgroundColor: colors.primary + '15',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  iconBoxText: {
+    fontSize: 32,
+  },
   problemIcon: {
     fontSize: 40,
     marginBottom: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
   },
   problemTitle: {
     fontSize: 20,
@@ -459,6 +553,7 @@ const styles = StyleSheet.create({
   featureIcon: {
     fontSize: 40,
     marginBottom: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
   },
   featureTitle: {
     fontSize: 20,
@@ -482,6 +577,7 @@ const styles = StyleSheet.create({
   avatar: {
     fontSize: 40,
     marginRight: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
   },
   testimonialName: {
     fontSize: 16,
@@ -495,6 +591,7 @@ const styles = StyleSheet.create({
   stars: {
     fontSize: 18,
     marginBottom: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
   },
   testimonialText: {
     fontSize: 15,
@@ -642,5 +739,100 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: colors.primary,
     fontWeight: '600',
+  },
+  // AI Agent Section Styles
+  aiAgentSection: {
+    backgroundColor: '#f0f4ff',
+    paddingVertical: 50,
+  },
+  aiAgentBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 24,
+    alignSelf: 'center',
+    marginBottom: 20,
+    shadowColor: colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  aiPulse: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#4ade80',
+    marginRight: 8,
+  },
+  aiAgentBadgeText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.primary,
+    letterSpacing: 0.5,
+  },
+  aiTitle: {
+    fontSize: 32,
+    textAlign: 'center',
+    color: colors.textDark,
+    marginBottom: 16,
+  },
+  aiSubtitle: {
+    fontSize: 18,
+    textAlign: 'center',
+    color: colors.textLight,
+    paddingHorizontal: 20,
+  },
+  aiFeatureCard: {
+    backgroundColor: colors.white,
+    borderLeftWidth: 4,
+    borderLeftColor: colors.primary,
+    marginBottom: 16,
+  },
+  aiIcon: {
+    fontSize: 48,
+    marginBottom: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
+  },
+  aiFeatureTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 10,
+  },
+  aiFeatureText: {
+    fontSize: 15,
+    lineHeight: 24,
+    color: colors.textLight,
+  },
+  aiPowerHighlight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.primary,
+    paddingVertical: 16,
+    paddingHorizontal: 24,
+    borderRadius: 12,
+    marginTop: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
+  },
+  aiPowerIcon: {
+    fontSize: 24,
+    marginRight: 12,
+    fontFamily: Platform.OS === 'web' ? 'Noto Color Emoji, Apple Color Emoji, Segoe UI Emoji, sans-serif' : undefined,
+  },
+  aiPowerText: {
+    flex: 1,
+    fontSize: 15,
+    fontWeight: '600',
+    color: colors.white,
+    textAlign: 'center',
   },
 });

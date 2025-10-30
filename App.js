@@ -1,7 +1,7 @@
-﻿import React from 'react';
+﻿import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View, Platform } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
@@ -21,7 +21,6 @@ import ChatScreen from './src/screens/ChatScreen';
 import { colors } from './src/styles/colors';
 import { PatientDataProvider } from './src/context/PatientDataContext';
 import { SubscriptionProvider } from './src/context/SubscriptionContext';
-import FloatingChatButton from './src/components/FloatingChatButton';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +52,16 @@ const HomeHeader = ({ navigation }) => (
 );
 
 export default function App() {
+  useEffect(() => {
+    // Fix scrolling on web
+    if (Platform.OS === 'web') {
+      document.body.style.overflow = 'auto';
+      document.documentElement.style.overflow = 'auto';
+      document.body.style.height = '100%';
+      document.documentElement.style.height = '100%';
+    }
+  }, []);
+
   return (
     <SafeAreaProvider>
       <SubscriptionProvider>
@@ -206,9 +215,6 @@ export default function App() {
           }} 
         />
       </Stack.Navigator>
-      
-      {/* Floating Chat Button - Available on all screens */}
-      <FloatingChatButton />
       </NavigationContainer>
         </PatientDataProvider>
       </SubscriptionProvider>

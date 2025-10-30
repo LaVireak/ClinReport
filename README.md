@@ -1,469 +1,357 @@
-# ClinReport# ClinReport Mobile App
+# ClinReport
 
+**AI-Powered Personal Health Monitoring & Management Platform**
 
+A comprehensive React Native mobile application built with Expo that empowers users to track their health, receive AI-powered risk assessments, connect with healthcare providers in Phnom Penh, Cambodia, and manage their wellness journey - all in one powerful app.
 
-AI-powered health monitoring and management mobile app built with React Native and Expo.**AI-Powered Personal Health Monitoring & Management Platform**
+[![Expo](https://img.shields.io/badge/Expo-54.0.20-blue.svg)](https://expo.dev/)
+[![React Native](https://img.shields.io/badge/React%20Native-0.81.5-blue.svg)](https://reactnative.dev/)
+[![License](https://img.shields.io/badge/License-Private-red.svg)]()
 
+## 🌟 Overview
 
+ClinReport is designed to make healthcare accessible and manageable for everyone in Cambodia. It combines intelligent health tracking with AI-powered analysis to provide actionable insights and connect users with healthcare providers when needed.
 
-## FeaturesA comprehensive React Native mobile application that empowers users to track their health, receive AI-powered risk assessments, connect with healthcare providers, and manage their wellness journey - all in one powerful app.
+## 🚀 Key Features
 
+### 📊 AI-Powered Health Analysis
 
-
-- 📊 **AI Health Analysis** - Risk assessment and personalized recommendations## 🚀 Key Features
-
-- 🏥 **Health Tracking** - Monitor vitals, symptoms, sleep, exercise, and medications
-
-- 🚨 **Emergency Services** - Quick access to emergency contacts and hospital finder### 📊 AI-Powered Health Analysis
-
-- 🏨 **Hospital Integration** - Browse hospitals, book appointments with doctors- **Smart Risk Assessment**: Advanced AI engine analyzes your health data and provides risk scores (0-100)
-
-- 🔔 **Smart Notifications** - Health reminders and medication alerts- **Multi-Factor Analysis**: Evaluates symptoms, vital signs, chronic conditions, and health habits
-
-- 💎 **Subscription Plans** - Free, Premium ($4.99/mo), and Enterprise ($14.99/mo) tiers- **Personalized Recommendations**: Tailored health advice based on your unique profile
-
+- **Smart Risk Assessment**: Advanced AI engine analyzes your health data and provides risk scores (LOW, MEDIUM, HIGH)
+- **Multi-Factor Analysis**: Evaluates symptoms, vital signs, chronic conditions, and lifestyle habits
+- **Personalized Recommendations**: Tailored health advice based on your unique profile
 - **Doctor & Hospital Recommendations**: AI suggests the best healthcare providers for your needs
-
-## Quick Start
+- **AI Medical Assistant Chat**: Premium feature for doctor-like consultations (conversational health guidance)
 
 ### 🏥 Comprehensive Health Tracking
 
-### Prerequisites- **Daily Health Logs**: Track 13+ health metrics including vitals, symptoms, mood, and activities
-
-- **Medical History**: Store and manage medical records (visits, surgeries, tests, vaccinations)
-
-- Node.js v16 or higher- **Disease History**: Track chronic conditions with status monitoring (active, chronic, monitoring, recovered)
-
-- Expo Go app on your phone ([iOS](https://apps.apple.com/app/expo-go/id982107779) | [Android](https://play.google.com/store/apps/details?id=host.exp.exponent))- **Sleep Tracking**: Monitor sleep quality, duration, and patterns with 7-day trend charts
-
+- **Daily Health Logs**: Track 13+ health metrics including:
+  - Vital signs (blood pressure, heart rate, temperature, weight)
+  - Symptoms and severity
+  - Mood and mental state
+  - Exercise duration
+  - Water intake
+  - Smoking status
+  - Medication adherence
+- **Medical History**: Store and manage complete medical records:
+  - Hospital visits
+  - Diagnoses and treatments
+  - Surgeries and procedures
+  - Test results
+  - Vaccinations
+- **Disease History**: Track chronic conditions with status monitoring (ongoing, resolved, chronic)
+- **Sleep Tracking**: Monitor sleep quality, duration, and patterns with 7-day trend charts
 - **Exercise Logging**: Record workouts across 8 exercise types with intensity tracking
+- **Medication Adherence**: Track medication compliance with visual calendar and statistics
 
-### Installation- **Medication Adherence**: Track medication compliance with visual calendar and statistics
+### 🚨 Emergency Services
 
-
-
-```bash### 🚨 Emergency Services
-
-npm install- **One-Tap Emergency Contacts**: Quick access to ambulance, police, and fire services
-
-```- **Critical Symptoms Checklist**: 8 emergency symptoms with immediate action guidance
-
+- **One-Tap Emergency Contacts**: Quick access to:
+  - 🚑 Ambulance (119)
+  - 👮 Police (117)
+  - 🚒 Fire Department (118)
+- **Critical Symptoms Checklist**: 8 emergency symptoms with immediate action guidance:
+  - Chest pain
+  - Difficulty breathing
+  - Severe headache
+  - Sudden numbness
+  - Loss of consciousness
+  - Seizure
+  - Severe bleeding
+  - Severe abdominal pain
 - **AI Hospital Recommendations**: Automatic hospital suggestions based on your condition
+- **Hospital Services Display**: View emergency, ICU, and ambulance availability
 
-### Run the App- **Hospital Services Display**: View emergency, ICU, and ambulance availability
+### 🏨 Hospital Integration & Booking (Phnom Penh)
 
-
-
-```bash### 🏨 Hospital Integration & Booking
-
-npm start- **MeetDoctors Partnership**: Priority booking with partner hospitals and doctors
-
-```- **Hospital Directory**: Browse 5 major Phnom Penh hospitals with detailed information
-
+- **Hospital Directory**: Browse 5 major hospitals:
+  - Royal Phnom Penh Hospital (Private)
+  - Calmette Hospital (Public)
+  - Khmer Soviet Friendship Hospital (Public)
+  - Sunrise Japan Hospital (Private)
+  - Naga Clinic (Private)
 - **Doctor Profiles**: View specialties, experience, languages, and contact information
-
-Scan the QR code with your phone's camera (iOS) or Expo Go app (Android).- **Appointment Booking**: Book appointments with date/time selection directly in the app
-
+- **MeetDoctors Partnership**: Priority booking with partner hospitals and doctors
+- **Appointment Booking**: Book appointments with date/time selection directly in the app
 - **Service Filters**: Find hospitals by emergency services, ICU, and ambulance availability
-
-## Tech Stack
+- **Interactive Map**: Location-based hospital search with Google Maps integration
 
 ### 🔔 Smart Notifications
 
-- React Native 0.76.5- **Daily Health Reminders**: Customizable time for daily health logging
-
-- Expo SDK 54- **Medication Alerts**: Weekly schedule with per-day medication reminders
-
-- React Navigation 7.1.18- **Health Tips**: Daily wellness tips delivered at your preferred time
-
-- React Context API for state management- **High-Risk Alerts**: Immediate notifications when AI detects high health risks
-
+- **Daily Health Reminders**: Customizable time for daily health logging
+- **Medication Alerts**: Weekly schedule with per-day medication reminders
+- **Health Tips**: Daily wellness tips delivered at your preferred time
+- **High-Risk Alerts**: Immediate notifications when AI detects high health risks
 - **Appointment Reminders**: 24-hour and 1-hour before appointment notifications
-
-## Project Structure
 
 ### 💎 Flexible Subscription Plans
 
-```- **Free Tier**: Basic health tracking with manual data entry
+- **Free Tier**:
+  - Habit tracking
+  - Notification alerts
+  - 3 AI Summary analyses per month
+- **Premium ($3.99/mo)**:
+  - Everything in Free
+  - AI Agent Chat (doctor-like consultation)
+  - Unlimited AI Summary analyses
+  - Doctor recommendations
+  - Hospital recommendations
+  - Priority support
+- **Enterprise (Coming Soon)**:
+  - Hospital integration
+  - Priority booking
+  - 24/7 support
+  - Family accounts
+  - Custom features
 
-src/- **Premium ($4.99/mo)**: AI analysis, unlimited logs, priority support, advanced notifications
+### 🎨 User Experience
 
-├── components/         # Reusable UI components- **Enterprise ($14.99/mo)**: Hospital integration, priority booking, 24/7 support, family accounts
-
-├── context/           # Global state (PatientDataContext)
-
-├── screens/           # App screens (19 total)### 🎨 User Experience
-
-├── services/          # AI analysis & notifications- **Intuitive Interface**: Clean, modern design with color-coded health indicators
-
-└── styles/            # Colors & global styles- **Visual Analytics**: Charts and graphs for sleep, exercise, and medication trends
-
-```- **Modal-Based Forms**: Streamlined data entry with easy-to-use forms
-
-- **Responsive Design**: Optimized for all mobile screen sizes
-
-## Main Screens
-
-## 📱 Running on Expo Go
-
-- **PatientDashboard** - Health tracking hub with AI analysis
-
-- **MedicalHistoryScreen** - Medical records management### Prerequisites
-
-- **SleepTrackingScreen** - Sleep monitoring with charts
-
-- **ExerciseLoggingScreen** - Workout tracking- Node.js (v16 or higher)
-
-- **MedicationTrackingScreen** - Medication adherence- Expo Go app installed on your phone:
-
-- **EmergencyScreen** - Emergency services & hospital finder  - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
-
-- **HospitalPartnersScreen** - Hospital directory & booking  - [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
-
-
-
-## License### Installation
-
-
-
-© 2025 ClinReport AI. All rights reserved.1. Clone the repository and navigate to the directory:
-
-
-```bash
-cd "d:\Side Quest\ClinReport"
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-### Running the App
-
-1. Start the Expo development server:
-```bash
-npm start
-```
-
-2. A QR code will appear in your terminal and browser
-
-3. **On your phone:**
-   - **iOS**: Open the Camera app and scan the QR code
-   - **Android**: Open Expo Go app and scan the QR code
-
-4. The app will load on your phone!
-
-### Alternative Commands
-
-- Start with Android emulator: `npm run android`
-- Start with iOS simulator (Mac only): `npm run ios`
-- Start web version: `npm run web`
-
-
-## 📂 Project Structure
-
-```
-ClinReport/
-├── src/
-│   ├── components/           # Reusable UI components
-│   ├── context/
-│   │   └── PatientDataContext.js    # Global state management
-│   ├── screens/              # App screens (19 total)
-│   │   ├── HomeScreen.js            # Landing page
-│   │   ├── ProductScreen.js         # Product features
-│   │   ├── DemoScreen.js            # Interactive demo
-│   │   ├── ContactScreen.js         # Contact form
-│   │   ├── PricingScreen.js         # Pricing information
-│   │   ├── AboutScreen.js           # About company
-│   │   ├── LoginScreen.js           # User authentication
-│   │   ├── DoctorDashboard.js       # Doctor interface
-│   │   ├── PatientDashboard.js      # Patient main dashboard with AI
-│   │   ├── MedicalHistoryScreen.js  # Medical records management
-│   │   ├── DiseaseHistoryScreen.js  # Disease tracking
-│   │   ├── SleepTrackingScreen.js   # Sleep monitoring
-│   │   ├── ExerciseLoggingScreen.js # Exercise tracking
-│   │   ├── MedicationTrackingScreen.js # Medication adherence
-│   │   ├── EmergencyScreen.js       # Emergency services
-│   │   ├── HospitalPartnersScreen.js # Hospital directory
-│   │   ├── HospitalDetailScreen.js  # Hospital info & booking
-│   │   ├── NotificationSettingsScreen.js # Notification preferences
-│   │   └── SubscriptionScreen.js    # Subscription management
-│   ├── services/
-│   │   ├── AIAnalysisService.js     # AI health risk engine
-│   │   └── NotificationService.js   # Notification management
-│   └── styles/
-│       ├── colors.js                # Color palette
-│       └── globalStyles.js          # Shared styles
-├── App.js                    # Main app & navigation
-├── app.json                  # Expo configuration
-├── package.json              # Dependencies
-├── README.md                 # This file
-├── FEATURES.md               # Detailed feature documentation
-├── NEW_FEATURES_PLAN.md      # Feature planning document
-├── QUICK_START_GUIDE.md      # Developer quick start
-├── FEATURE_UPDATE_SUMMARY.md # Feature summary
-├── DEVELOPMENT_ROADMAP.md    # Development roadmap
-└── IMPLEMENTATION_SUMMARY.md # Implementation notes
-```
+- **Intuitive Interface**: Clean, modern design with color-coded health indicators
+- **Visual Analytics**: Charts and graphs for sleep, exercise, and medication trends
+- **Smooth Animations**: Polished UI with fade-in, scale-in, and slide-in effects
+- **Responsive Design**: Optimized for both mobile and web platforms
+- **Dark Mode Ready**: Professional gradient themes
 
 ## 🛠️ Tech Stack
 
-- **React Native 0.76.5**: Cross-platform mobile framework
-- **Expo SDK 54**: Development and build platform
-- **React Navigation 7.1.18**: Native navigation library
-- **React Context API**: Global state management
-- **expo-notifications**: Push notification system
-- **Expo Linear Gradient**: Gradient components
-- **React Native Safe Area Context**: Safe area handling
+- **Framework**: React Native 0.81.5
+- **Runtime**: Expo SDK 54.0.20
+- **Navigation**: React Navigation 7.1.18
+- **State Management**: React Context API
+  - `PatientDataContext`: Patient data, medical history, AI assessments
+  - `SubscriptionContext`: Subscription plans and feature access
+- **Storage**: AsyncStorage for local data persistence
+- **Notifications**: Expo Notifications
+- **UI Components**:
+  - Expo Linear Gradient
+  - React Native Gesture Handler
+  - React Native Reanimated
+  - React Native Safe Area Context
+- **Web Support**: React Native Web 0.21.0
+- **AI Integration**: n8n Chat 0.63.0 (for AI agent)
+- **HTTP Client**: Axios 1.13.1
 
-## � Dependencies
+## 📁 Project Structure
 
-```json
-{
-  "expo": "~54.0.20",
-  "react": "18.3.1",
-  "react-native": "0.76.5",
-  "@react-navigation/native": "^7.1.18",
-  "@react-navigation/stack": "^7.1.15",
-  "expo-notifications": "~0.30.5",
-  "expo-linear-gradient": "~14.0.2"
-}
+```
+src/
+├── components/              # Reusable UI components
+│   ├── AnimatedView.js     # Fade, scale, and slide animations
+│   ├── EmojiIcon.js        # Emoji rendering component
+│   ├── FloatingChatButton.js # Floating chat button
+│   └── Icon.js             # Icon wrapper component
+├── context/                 # Global state management
+│   ├── PatientDataContext.js    # Patient data, logs, AI assessments
+│   └── SubscriptionContext.js   # Subscription plans and features
+├── screens/                 # App screens (19 total)
+│   ├── HomeScreen.js       # Landing page with hero section
+│   ├── ProductScreen.js    # Product features showcase
+│   ├── DemoScreen.js       # Live demo showcase
+│   ├── LoginScreen.js      # Authentication
+│   ├── PatientDashboard.js # Main health tracking dashboard
+│   ├── MedicalHistoryScreen.js      # Medical records management
+│   ├── DiseaseHistoryScreen.js      # Disease tracking
+│   ├── SleepTrackingScreen.js       # Sleep monitoring
+│   ├── ExerciseLoggingScreen.js     # Exercise tracking
+│   ├── MedicationTrackingScreen.js  # Medication adherence
+│   ├── EmergencyScreen.js           # Emergency contacts and hospitals
+│   ├── HospitalPartnersScreen.js    # Hospital directory
+│   ├── HospitalDetailScreen.js      # Individual hospital details
+│   ├── MapScreen.js                 # Interactive hospital map
+│   ├── ChatScreen.js                # AI medical assistant chat
+│   ├── SubscriptionScreen.js        # Subscription management
+│   ├── PricingScreen.js             # Pricing plans
+│   ├── NotificationSettingsScreen.js # Notification preferences
+│   ├── ContactScreen.js             # Contact form
+│   └── AboutScreen.js               # About the app
+├── services/                # Business logic and AI services
+│   ├── AIAnalysisService.js         # Health risk assessment engine
+│   ├── AISummaryService.js          # AI summary generation
+│   ├── AIAgentService.js            # AI chat agent logic
+│   └── NotificationService.js       # Notification scheduling
+└── styles/                  # Design system
+    ├── colors.js            # Color palette
+    └── globalStyles.js      # Shared styles
 ```
 
-## 🔧 Installation & Setup
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v16 or higher)
-- npm or yarn package manager
-- Expo Go app installed on your phone:
+- **Node.js**: v16 or higher
+- **npm** or **yarn**: Package manager
+- **Expo Go**: Mobile app for testing
   - [iOS App Store](https://apps.apple.com/app/expo-go/id982107779)
   - [Google Play Store](https://play.google.com/store/apps/details?id=host.exp.exponent)
+- **Expo Account**: Create a free account at [expo.dev](https://expo.dev/)
 
-### Installation Steps
+### Installation
 
-1. Clone the repository:
+1. **Clone the repository**
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/LaVireak/ClinReport.git
 cd ClinReport
 ```
 
-2. Install dependencies:
+2. **Install dependencies**
 
 ```bash
 npm install
 ```
 
-### Running the App
-
-1. Start the Expo development server:
+3. **Start the development server**
 
 ```bash
 npm start
 ```
 
-2. A QR code will appear in your terminal and browser
+### Running the App
 
-3. **On your phone:**
-   - **iOS**: Open the Camera app and scan the QR code
-   - **Android**: Open Expo Go app and scan the QR code
+#### On Mobile Device (Recommended)
 
-4. The app will load on your phone!
+1. Open Expo Go app on your phone
+2. Scan the QR code from the terminal with:
+   - **iOS**: Camera app
+   - **Android**: Expo Go app
 
-### Alternative Commands
-
-- Start with Android emulator: `npm run android`
-- Start with iOS simulator (Mac only): `npm run ios`
-- Start web version: `npm run web`
-
-## 🏗️ Architecture
-
-### State Management
-
-- **PatientDataContext**: Centralized global state using React Context API
-- **17 Context Functions**: Complete CRUD operations for all health data
-- **Persistent Storage**: AsyncStorage integration for data persistence
-
-### AI Analysis Engine
-
-- **Risk Scoring Algorithm**: Multi-factor weighted scoring system (0-100 scale)
-- **Risk Levels**: LOW (<40), MEDIUM (40-70), HIGH (>70)
-- **Analysis Factors**:
-  - Vital signs (heart rate, blood pressure, temperature, O2 saturation)
-  - Symptoms severity and count
-  - Chronic conditions
-  - Health habits (sleep, exercise, medication adherence)
-  - Data completeness
-
-### Services Architecture
-
-- **AIAnalysisService**: Health risk assessment, doctor/hospital recommendations
-- **NotificationService**: Notification scheduling, permission management, Android channels
-
-### Navigation Flow
-
-```text
-Home → Login → Patient Dashboard (Main Hub)
-  ├── Medical History
-  ├── Disease History
-  ├── Sleep Tracking
-  ├── Exercise Logging
-  ├── Medication Tracking
-  ├── Emergency Services
-  ├── Hospital Partners → Hospital Detail → Appointment Booking
-  ├── Notification Settings
-  └── Subscription Management
-```
-
-## 🎯 Key Features Deep Dive
-
-### AI Health Analysis
-
-The AI engine evaluates multiple health factors:
-
-- **Vital Signs Analysis**: Detects abnormal heart rate, blood pressure, temperature, O2 levels
-- **Symptom Assessment**: Weights symptom severity and frequency
-- **Chronic Condition Monitoring**: Tracks disease progression and status
-- **Lifestyle Factors**: Incorporates sleep quality, exercise frequency, medication adherence
-- **Personalized Recommendations**: Tailored health advice based on risk profile
-
-### Hospital Integration
-
-- **5 Partner Hospitals**: Major Phnom Penh hospitals with full service details
-- **5 Doctor Profiles**: Specialists across multiple medical fields
-- **MeetDoctors Partnership**: Priority booking and seamless communication
-- **Service Filtering**: Find hospitals by Emergency, ICU, Ambulance availability
-- **Appointment Booking**: In-app booking with date/time selection
-
-### Notification System
-
-- **Android Channels**: Separate channels for different notification types
-- **Scheduled Notifications**: Daily health reminders, medication alerts, health tips
-- **Immediate Alerts**: High-risk health warnings
-- **Appointment Reminders**: 24-hour and 1-hour before notifications
-- **Customizable Settings**: User control over all notification preferences
-
-## 📱 Screens Overview
-
-| Screen | Purpose | Key Features |
-|--------|---------|--------------|
-| **PatientDashboard** | Main health tracking hub | 13-field health input, AI analysis, risk display |
-| **MedicalHistoryScreen** | Medical records | 6 record types, timeline view, CRUD operations |
-| **DiseaseHistoryScreen** | Disease tracking | 4 status types, severity levels, color coding |
-| **SleepTrackingScreen** | Sleep monitoring | Quality ratings, 7-day charts, sleep tips |
-| **ExerciseLoggingScreen** | Workout logging | 8 exercise types, intensity tracking, weekly goals |
-| **MedicationTrackingScreen** | Medication adherence | 30-day calendar, compliance %, streak tracking |
-| **EmergencyScreen** | Emergency services | Critical symptoms, hospital finder, one-tap calling |
-| **HospitalPartnersScreen** | Hospital directory | Search, filters, MeetDoctors partners |
-| **HospitalDetailScreen** | Hospital details | Services, doctors, appointment booking |
-| **NotificationSettingsScreen** | Notification preferences | Toggle notifications, view stats, test notifications |
-| **SubscriptionScreen** | Subscription management | 3 tiers, billing cycles, payment integration |
-
-## 🚀 Development & Deployment
-
-### Building for Production
-
-**Android:**
+#### On Emulator/Simulator
 
 ```bash
-eas build --platform android
+# iOS (requires macOS and Xcode)
+npm run ios
+
+# Android (requires Android Studio)
+npm run android
 ```
 
-**iOS:**
+#### On Web Browser
 
 ```bash
-eas build --platform ios
+npm run web
 ```
 
-### App Store Submission
+## 📱 Key Screens & Usage
 
-**Android (Google Play):**
+### 1. Patient Dashboard
 
-```bash
-eas submit --platform android
-```
+- Central hub for health tracking
+- Quick stats: Latest AI assessment, medication compliance, sleep quality
+- Action buttons: Log Health, Medical History, Emergency, Hospital Partners
+- Visual risk indicators (green = LOW, red = HIGH)
 
-**iOS (App Store):**
+### 2. Daily Health Logging
 
-```bash
-eas submit --platform ios
-```
+- Input vitals, symptoms, and lifestyle data
+- Data source selection (hospital vs. self-reported)
+- Automatic AI analysis after submission
+- View AI recommendations and risk assessment
 
-### Environment Configuration
+### 3. AI Medical Assistant Chat (Premium)
 
-Create `.env` file for API keys and configurations:
+- Type "hi" for LOW RISK consultation demo
+- Type "hello" for HIGH RISK consultation demo
+- Conversational health guidance
+- Personalized medical advice
+- Doctor and hospital recommendations for high-risk cases
 
-```bash
-EXPO_PUBLIC_API_URL=your_api_url
-EXPO_PUBLIC_STRIPE_KEY=your_stripe_key
-```
+### 4. Emergency Screen
 
-## 🔧 Troubleshooting
+- One-tap emergency calling
+- Critical symptoms checklist
+- Nearby hospital finder with AI recommendations
+- Emergency service availability display
 
-### Common Issues
+### 5. Hospital Partners
 
-**QR Code won't scan**
+- Browse 5 major Phnom Penh hospitals
+- Filter by services (Emergency, ICU, Ambulance)
+- View detailed hospital information
+- Interactive map view
+- Direct appointment booking
 
-- Ensure phone and computer are on the same Wi-Fi network
-- Try "Tunnel" connection mode in Expo
-- Use LAN connection for local network
+## 🔐 Data Privacy & Security
 
-**App won't load**
+- **Local Storage**: All health data stored locally on device using AsyncStorage
+- **No Cloud Sync**: Data never leaves your device (demo version)
+- **User Control**: Complete control over data deletion and management
+- **HIPAA Considerations**: Designed with privacy-first architecture (for production, implement encryption)
 
-- Clear Expo Go app cache
-- Restart development server
-- Check terminal for error messages
-- Verify all dependencies are installed
+## 🎯 AI Services Architecture
 
-**Notification issues**
+### AIAnalysisService
 
-- Grant notification permissions in device settings
-- Check Android notification channel settings
-- Verify NotificationService is properly configured
+- **Risk Calculation**: Analyzes 8+ health factors
+- **Symptom Severity**: Critical vs. warning symptom detection
+- **Hospital Matching**: Location-based recommendations
+- **Doctor Matching**: Specialty-based doctor suggestions
 
-**Build failures**
+### AISummaryService
 
-- Update Expo SDK: `npx expo install --fix`
-- Clear node_modules and reinstall: `rm -rf node_modules && npm install`
-- Check expo-cli version: `npm install -g expo-cli`
+- **Risk Level**: LOW or HIGH classification
+- **Summary Generation**: Natural language health summaries
+- **Recommendations**: Actionable health advice
+- **Usage Tracking**: Respects subscription limits
 
-## 📚 Documentation
+### AIAgentService
 
-- **[FEATURES.md](./FEATURES.md)**: Comprehensive feature documentation
-- **[QUICK_START_GUIDE.md](./QUICK_START_GUIDE.md)**: Developer quick start guide
-- **[NEW_FEATURES_PLAN.md](./NEW_FEATURES_PLAN.md)**: Feature planning document
-- **[DEVELOPMENT_ROADMAP.md](./DEVELOPMENT_ROADMAP.md)**: Development roadmap
+- **Conversational AI**: Natural language health consultations
+- **Context Awareness**: Maintains conversation history
+- **Emergency Detection**: Identifies urgent situations
+- **Follow-up Questions**: Intelligent probing for symptoms
+
+## 🧪 Demo Scenarios
+
+The app includes built-in demo scenarios for testing:
+
+### LOW RISK Consultation
+
+- Type "hi" in chat
+- Auto-populates stable vitals
+- Shows normal health status
+- Provides preventive care advice
+
+### HIGH RISK Consultation
+
+- Type "hello" in chat
+- Auto-populates concerning symptoms
+- Shows elevated risk indicators
+- Recommends immediate medical attention
+- Suggests specialists and hospitals
+
+## 🛣️ Roadmap
+
+- [ ] **Backend Integration**: Connect to real healthcare APIs
+- [ ] **Data Encryption**: End-to-end encryption for health data
+- [ ] **Cloud Sync**: Secure cloud backup and sync
+- [ ] **Telemedicine**: Video consultation integration
+- [ ] **Lab Results**: Integration with lab result systems
+- [ ] **Multi-language**: Khmer language support
+- [ ] **Family Accounts**: Manage multiple family members
+- [ ] **Apple Health & Google Fit**: Import data from wearables
+- [ ] **Prescription Management**: Digital prescriptions
+- [ ] **Insurance Integration**: Claims and coverage info
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/YourFeature`
-3. Commit your changes: `git commit -m 'Add YourFeature'`
-4. Push to the branch: `git push origin feature/YourFeature`
-5. Open a Pull Request
-
-## 🔐 Security & Privacy
-
-- **Data Encryption**: All sensitive data encrypted at rest
-- **HIPAA Compliance**: Architecture follows HIPAA guidelines
-- **Secure Storage**: AsyncStorage with encryption for local data
-- **Privacy First**: No data shared without explicit user consent
+This is a private project. For inquiries, please contact the repository owner.
 
 ## 📄 License
 
-© 2025 ClinReport AI. All rights reserved.
+Private - All rights reserved.
 
-## 📞 Support & Contact
+## 📞 Contact & Support
 
-- **Email**: <support@clinreport.com>
-- **Website**: <https://www.clinreport.com>
-- **Documentation**: <https://docs.clinreport.com>
-- **Issues**: Report bugs via GitHub Issues
+- **Repository**: [github.com/LaVireak/ClinReport](https://github.com/LaVireak/ClinReport)
+- **Issues**: Create an issue on GitHub
+- **Email**: Contact through the app's Contact screen
+
+## 🙏 Acknowledgments
+
+- Built with ❤️ for the Cambodian healthcare community
+- Powered by React Native and Expo
+- AI analysis algorithms inspired by medical best practices
+- Hospital data for Phnom Penh, Cambodia
 
 ---
 
-**Built with ❤️ using React Native & Expo**
+**Note**: This is a demo version with simulated AI analysis. For production use, integrate with licensed medical AI APIs and consult healthcare professionals for medical advice validation.
