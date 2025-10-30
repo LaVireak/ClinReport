@@ -2,7 +2,7 @@
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 
 import HomeScreen from './src/screens/HomeScreen';
 import ProductScreen from './src/screens/ProductScreen';
@@ -11,16 +11,17 @@ import ContactScreen from './src/screens/ContactScreen';
 import PricingScreen from './src/screens/PricingScreen';
 import AboutScreen from './src/screens/AboutScreen';
 import LoginScreen from './src/screens/LoginScreen';
-import DoctorDashboard from './src/screens/DoctorDashboard';
 import PatientDashboard from './src/screens/PatientDashboard';
 import MapScreen from './src/screens/MapScreen';
-import DoctorRecommendationScreen from './src/screens/DoctorRecommendationScreen';
 import SubscriptionScreen from './src/screens/SubscriptionScreen';
 import EmergencyScreen from './src/screens/EmergencyScreen';
 import HospitalDetailScreen from './src/screens/HospitalDetailScreen';
+import ChatScreen from './src/screens/ChatScreen';
 
 import { colors } from './src/styles/colors';
 import { PatientDataProvider } from './src/context/PatientDataContext';
+import { SubscriptionProvider } from './src/context/SubscriptionContext';
+import FloatingChatButton from './src/components/FloatingChatButton';
 
 const Stack = createStackNavigator();
 
@@ -53,8 +54,10 @@ const HomeHeader = ({ navigation }) => (
 
 export default function App() {
   return (
-    <PatientDataProvider>
-      <NavigationContainer>
+    <SafeAreaProvider>
+      <SubscriptionProvider>
+        <PatientDataProvider>
+          <NavigationContainer>
         <Stack.Navigator
         initialRouteName="Home"
         screenOptions={{
@@ -160,13 +163,6 @@ export default function App() {
           }} 
         />
         <Stack.Screen 
-          name="DoctorDashboard" 
-          component={DoctorDashboard} 
-          options={{ 
-            headerShown: false,
-          }} 
-        />
-        <Stack.Screen 
           name="PatientDashboard" 
           component={PatientDashboard} 
           options={{ 
@@ -176,13 +172,6 @@ export default function App() {
         <Stack.Screen 
           name="MapScreen" 
           component={MapScreen} 
-          options={{ 
-            headerShown: false,
-          }} 
-        />
-        <Stack.Screen 
-          name="DoctorRecommendation" 
-          component={DoctorRecommendationScreen} 
           options={{ 
             headerShown: false,
           }} 
@@ -208,9 +197,22 @@ export default function App() {
             headerShown: false,
           }} 
         />
+        <Stack.Screen 
+          name="Chat" 
+          component={ChatScreen} 
+          options={{ 
+            title: 'AI Health Assistant',
+            headerShown: true,
+          }} 
+        />
       </Stack.Navigator>
+      
+      {/* Floating Chat Button - Available on all screens */}
+      <FloatingChatButton />
       </NavigationContainer>
-    </PatientDataProvider>
+        </PatientDataProvider>
+      </SubscriptionProvider>
+    </SafeAreaProvider>
   );
 }
 

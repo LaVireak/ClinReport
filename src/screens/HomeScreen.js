@@ -228,21 +228,121 @@ const HomeScreen = ({ navigation }) => {
         </View>
       </View>
 
+      {/* Pricing Section */}
+      <View style={[globalStyles.section, styles.pricingSection]}>
+        <FadeInView>
+          <Text style={globalStyles.sectionTitle}>Choose Your Plan</Text>
+          <Text style={globalStyles.sectionSubtitle}>
+            Simple, transparent pricing for better health management
+          </Text>
+        </FadeInView>
+
+        <View style={styles.pricingGrid}>
+          {/* FREE Plan */}
+          <ScaleInView delay={200}>
+            <View style={[globalStyles.card, styles.pricingCard]}>
+              <Text style={styles.planBadge}>FREE</Text>
+              <Text style={styles.planPrice}>$0<Text style={styles.planPeriod}>/forever</Text></Text>
+              <Text style={styles.planDescription}>Get started with basics</Text>
+              
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeature}>✓ Daily health logging</Text>
+                <Text style={styles.planFeature}>✓ 3 AI Summary analyses</Text>
+                <Text style={styles.planFeature}>✓ Medication tracking</Text>
+                <Text style={styles.planFeature}>✓ Basic health metrics</Text>
+              </View>
+
+              <TouchableOpacity
+                style={[globalStyles.buttonSecondary, styles.planButton]}
+                onPress={() => navigation.navigate('Login')}
+              >
+                <Text style={globalStyles.buttonTextSecondary}>Get Started Free</Text>
+              </TouchableOpacity>
+            </View>
+          </ScaleInView>
+
+          {/* PREMIUM Plan */}
+          <ScaleInView delay={400}>
+            <View style={[globalStyles.card, styles.pricingCard, styles.premiumCard]}>
+              <View style={styles.recommendedBadge}>
+                <Text style={styles.recommendedText}>MOST POPULAR</Text>
+              </View>
+              <Text style={styles.planBadge}>PREMIUM</Text>
+              <Text style={[styles.planPrice, styles.premiumPrice]}>$3.99<Text style={styles.planPeriod}>/month</Text></Text>
+              <Text style={styles.planDescription}>Full AI-powered features</Text>
+              
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeature}>✓ Everything in Free</Text>
+                <Text style={styles.planFeature}>✓ Unlimited AI Summary</Text>
+                <Text style={styles.planFeature}>✓ AI Agent chatbot</Text>
+                <Text style={styles.planFeature}>✓ Doctor recommendations</Text>
+                <Text style={styles.planFeature}>✓ Hospital suggestions</Text>
+                <Text style={styles.planFeature}>✓ Priority support</Text>
+              </View>
+
+              <TouchableOpacity
+                style={[globalStyles.buttonPrimary, styles.planButton]}
+                onPress={() => navigation.navigate('Login')}
+              >
+                <Text style={globalStyles.buttonTextPrimary}>Start Premium Trial</Text>
+              </TouchableOpacity>
+            </View>
+          </ScaleInView>
+
+          {/* ENTERPRISE Plan */}
+          <ScaleInView delay={600}>
+            <View style={[globalStyles.card, styles.pricingCard, styles.enterpriseCard]}>
+              <View style={styles.comingSoonBadge}>
+                <Text style={styles.comingSoonText}>COMING SOON</Text>
+              </View>
+              <Text style={styles.planBadge}>ENTERPRISE</Text>
+              <Text style={styles.planPrice}>Custom</Text>
+              <Text style={styles.planDescription}>For healthcare organizations</Text>
+              
+              <View style={styles.planFeatures}>
+                <Text style={styles.planFeature}>✓ Everything in Premium</Text>
+                <Text style={styles.planFeature}>✓ Doctor monitoring</Text>
+                <Text style={styles.planFeature}>✓ Multi-user accounts</Text>
+                <Text style={styles.planFeature}>✓ Patient management</Text>
+                <Text style={styles.planFeature}>✓ Dedicated support</Text>
+                <Text style={styles.planFeature}>✓ Custom integrations</Text>
+              </View>
+
+              <TouchableOpacity
+                style={[globalStyles.buttonSecondary, styles.planButton]}
+                onPress={() => navigation.navigate('Contact')}
+              >
+                <Text style={globalStyles.buttonTextSecondary}>Contact for Demo</Text>
+              </TouchableOpacity>
+            </View>
+          </ScaleInView>
+        </View>
+
+        <FadeInView delay={800}>
+          <TouchableOpacity
+            style={styles.viewAllPricingButton}
+            onPress={() => navigation.navigate('Pricing')}
+          >
+            <Text style={styles.viewAllPricingText}>View detailed pricing comparison →</Text>
+          </TouchableOpacity>
+        </FadeInView>
+      </View>
+
       {/* CTA Section */}
       <LinearGradient colors={[colors.primary, colors.secondary]} style={[globalStyles.section, styles.ctaSection]}>
-        <Text style={styles.ctaTitle}>Ready to Transform Your Clinical Workflow?</Text>
+        <Text style={styles.ctaTitle}>Ready to Transform Your Health Journey?</Text>
         <Text style={styles.ctaSubtitle}>
-          Join hundreds of healthcare providers already saving time and improving patient care.
+          Join thousands of users already managing their health with AI-powered insights.
         </Text>
         <View style={styles.buttonContainer}>
-          <TouchableOpacity style={[styles.ctaButton, styles.button]} onPress={() => navigation.navigate('Contact')}>
-            <Text style={styles.ctaButtonText}>🚀 Request Pilot</Text>
+          <TouchableOpacity style={[styles.ctaButton, styles.button]} onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.ctaButtonText}>🚀 Get Started Now</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.ctaButtonSecondary, styles.button]}
             onPress={() => navigation.navigate('Demo')}
           >
-            <Text style={styles.ctaButtonSecondaryText}>▶️ Try Interactive Demo</Text>
+            <Text style={styles.ctaButtonSecondaryText}>▶️ Try Demo</Text>
           </TouchableOpacity>
         </View>
       </LinearGradient>
@@ -441,6 +541,106 @@ const styles = StyleSheet.create({
   ctaButtonSecondaryText: {
     color: colors.white,
     fontSize: 16,
+    fontWeight: '600',
+  },
+  // Pricing Section Styles
+  pricingSection: {
+    paddingVertical: 40,
+  },
+  pricingGrid: {
+    marginTop: 20,
+  },
+  pricingCard: {
+    position: 'relative',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: colors.border,
+  },
+  premiumCard: {
+    borderColor: colors.primary,
+    backgroundColor: '#f8f9ff',
+    transform: [{ scale: 1.02 }],
+  },
+  enterpriseCard: {
+    borderColor: '#6c757d',
+    opacity: 0.95,
+  },
+  recommendedBadge: {
+    position: 'absolute',
+    top: -12,
+    right: 16,
+    backgroundColor: colors.primary,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    zIndex: 1,
+  },
+  recommendedText: {
+    color: colors.white,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  comingSoonBadge: {
+    position: 'absolute',
+    top: -12,
+    right: 16,
+    backgroundColor: '#6c757d',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 16,
+    zIndex: 1,
+  },
+  comingSoonText: {
+    color: colors.white,
+    fontSize: 11,
+    fontWeight: '700',
+  },
+  planBadge: {
+    fontSize: 14,
+    fontWeight: '700',
+    color: colors.primary,
+    marginBottom: 12,
+    textTransform: 'uppercase',
+  },
+  planPrice: {
+    fontSize: 36,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 8,
+  },
+  premiumPrice: {
+    color: colors.primary,
+  },
+  planPeriod: {
+    fontSize: 16,
+    fontWeight: '400',
+    color: colors.textLight,
+  },
+  planDescription: {
+    fontSize: 15,
+    color: colors.textLight,
+    marginBottom: 20,
+  },
+  planFeatures: {
+    marginBottom: 20,
+  },
+  planFeature: {
+    fontSize: 14,
+    color: colors.textDark,
+    marginBottom: 10,
+    lineHeight: 20,
+  },
+  planButton: {
+    marginTop: 8,
+  },
+  viewAllPricingButton: {
+    marginTop: 24,
+    alignItems: 'center',
+    paddingVertical: 12,
+  },
+  viewAllPricingText: {
+    fontSize: 16,
+    color: colors.primary,
     fontWeight: '600',
   },
 });

@@ -1,0 +1,695 @@
+import React, { useState, useEffect, useRef } from 'react';
+import {
+  View,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+  StyleSheet,
+  KeyboardAvoidingView,
+  Platform,
+  ActivityIndicator,
+  Modal,
+  Alert,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import AIAgentService from '../services/AIAgentService';
+import { useSubscription } from '../context/SubscriptionContext';
+import { usePatientData } from '../context/PatientDataContext';
+
+const CHAT_MESSAGES_KEY = 'chatMessages';
+const CHAT_HISTORY_KEY = 'chatHistory';
+
+export default function ChatScreen({ navigation }) {
+  const { canUseAIAgent, subscriptionPlan, PLAN_FEATURES } = useSubscription();
+  const { getCurrentPatient } = usePatientData();
+  const patientProfile = getCurrentPatient();
+  const [messages, setMessages] = useState([]);
+  const [inputText, setInputText] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [conversationHistory, setConversationHistory] = useState([]);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const flatListRef = useRef(null);
+
+  useEffect(() => {
+    initializeChat();
+  }, []);
+
+  const initializeChat = async () => {
+    try {
+      // Load previous session
+      const savedMessages = await AsyncStorage.getItem(CHAT_MESSAGES_KEY);
+      const savedHistory = await AsyncStorage.getItem(CHAT_HISTORY_KEY);
+
+      if (savedHistory) {
+        setConversationHistory(JSON.parse(savedHistory));
+      }
+
+      if (savedMessages) {
+        setMessages(JSON.parse(savedMessages));
+      } else {
+        // Add initial messages
+        const initialMessages = [
+          { 
+            id: '1', 
+            text: 'Hello! 👋 I\'m your AI Medical Assistant, powered by advanced health analysis technology.', 
+            sender: 'bot', 
+            timestamp: new Date().toISOString() 
+          },
+          { 
+            id: '2', 
+            text: 'I\'m here to help you understand your health and provide personalized medical guidance.\n\n💡 **Demo Mode:**\n• Type "hi" for LOW RISK consultation (stable vitals)\n• Type "hello" for HIGH RISK consultation (concerning symptoms)\n\nHow can I assist you today?', 
+            sender: 'bot', 
+            timestamp: new Date().toISOString() 
+          },
+        ];
+        setMessages(initialMessages);
+        await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(initialMessages));
+      }
+    } catch (error) {
+      console.error('Error initializing chat:', error);
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!inputText.trim()) return;
+
+    // Check if user can access AI Agent
+    if (!canUseAIAgent()) {
+      setShowUpgradeModal(true);
+      return;
+    }
+
+    const userInput = inputText.toLowerCase().trim();
+    
+    // Check if user types "hi" - auto-send patient introduction
+    if (userInput === 'hi' && patientProfile) {
+      // First, send the user's "hi" message
+      const hiMessage = {
+        id: Date.now().toString(),
+        text: inputText,
+        sender: 'user',
+        timestamp: new Date().toISOString(),
+      };
+
+      let currentMessages = [...messages, hiMessage];
+      setMessages(currentMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(currentMessages));
+      setInputText('');
+      
+      // Wait a moment for visual effect
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Auto-send comprehensive patient introduction
+      const latestLog = patientProfile.dailyLogs?.[patientProfile.dailyLogs.length - 1];
+      const todaySymptoms = latestLog?.symptoms || 'no specific symptoms today';
+      const currentMood = latestLog?.mood || 'okay';
+      const bloodPressure = latestLog?.bloodPressure || 'not measured';
+      const heartRate = latestLog?.heartRate || 'not measured';
+      const temperature = latestLog?.temperature || 'not measured';
+      const medications = patientProfile.medications?.join(', ') || 'none';
+      const medicalHistory = patientProfile.condition || 'no chronic conditions';
+      
+      // Build detailed introduction
+      let autoIntroText = `My name is ${patientProfile.name} and I'm ${patientProfile.age} years old. I have ${medicalHistory}.\n\n`;
+      autoIntroText += `Current symptoms: ${todaySymptoms}\n\n`;
+      autoIntroText += `Today's vitals:\n`;
+      autoIntroText += `• Blood Pressure: ${bloodPressure}\n`;
+      autoIntroText += `• Heart Rate: ${heartRate} bpm\n`;
+      autoIntroText += `• Temperature: ${temperature}°C\n`;
+      autoIntroText += `• Mood: ${currentMood}\n\n`;
+      autoIntroText += `Current medications: ${medications}\n\n`;
+      autoIntroText += `I'm feeling ${currentMood} today.`;
+      
+      const autoMessage = {
+        id: (Date.now() + 1).toString(),
+        text: autoIntroText,
+        sender: 'user',
+        timestamp: new Date().toISOString(),
+        isAutoGenerated: true,
+      };
+
+      currentMessages = [...currentMessages, autoMessage];
+      setMessages(currentMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(currentMessages));
+      
+      setIsLoading(true);
+
+      try {
+        // Get AI response to the introduction
+        const aiResponse = await AIAgentService.getAIAgentResponse(autoIntroText, conversationHistory);
+        
+        const botMessage = {
+          id: (Date.now() + 2).toString(),
+          text: aiResponse.message,
+          sender: 'bot',
+          timestamp: new Date().toISOString(),
+          riskLevel: aiResponse.riskLevel,
+          requiresDoctor: aiResponse.requiresDoctor,
+        };
+
+        const finalMessages = [...currentMessages, botMessage];
+        setMessages(finalMessages);
+        await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(finalMessages));
+
+        // Update conversation history
+        const newHistory = [
+          ...conversationHistory,
+          { role: 'user', message: autoIntroText },
+          { role: 'assistant', message: aiResponse.message },
+        ];
+        setConversationHistory(newHistory);
+        await AsyncStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(newHistory));
+      } catch (error) {
+        console.error('Error with auto-introduction:', error);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    // Check if user types "hello" - auto-send HIGH RISK patient introduction
+    if (userInput === 'hello' && patientProfile) {
+      // First, send the user's "hello" message
+      const helloMessage = {
+        id: Date.now().toString(),
+        text: inputText,
+        sender: 'user',
+        timestamp: new Date().toISOString(),
+      };
+
+      let currentMessages = [...messages, helloMessage];
+      setMessages(currentMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(currentMessages));
+      setInputText('');
+      
+      // Wait a moment for visual effect
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Auto-send HIGH RISK patient introduction
+      const latestLog = patientProfile.dailyLogs?.[patientProfile.dailyLogs.length - 1];
+      
+      // Build HIGH RISK scenario with concerning symptoms
+      let autoIntroText = `My name is ${patientProfile.name} and I'm ${patientProfile.age} years old. I have ${patientProfile.condition || 'hypertension and diabetes'}.\n\n`;
+      autoIntroText += `I'm experiencing concerning symptoms:\n`;
+      autoIntroText += `• Severe chest pain and tightness\n`;
+      autoIntroText += `• Difficulty breathing and shortness of breath\n`;
+      autoIntroText += `• Dizziness and feeling lightheaded\n`;
+      autoIntroText += `• Cold sweats and nausea\n\n`;
+      autoIntroText += `Today's vitals show alarming readings:\n`;
+      autoIntroText += `• Blood Pressure: 180/110 mmHg (very high)\n`;
+      autoIntroText += `• Heart Rate: 120 bpm (elevated)\n`;
+      autoIntroText += `• Temperature: 38.5°C (fever)\n`;
+      autoIntroText += `• Mood: anxious and worried\n\n`;
+      autoIntroText += `Current medications: ${patientProfile.medications?.join(', ') || 'Lisinopril, Metformin'}\n\n`;
+      autoIntroText += `These symptoms started about 2 hours ago and are getting worse. I'm really worried and don't know what to do.`;
+      
+      const autoMessage = {
+        id: (Date.now() + 1).toString(),
+        text: autoIntroText,
+        sender: 'user',
+        timestamp: new Date().toISOString(),
+        isAutoGenerated: true,
+      };
+
+      currentMessages = [...currentMessages, autoMessage];
+      setMessages(currentMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(currentMessages));
+      
+      setIsLoading(true);
+
+      try {
+        // Get AI response to the HIGH RISK introduction
+        const aiResponse = await AIAgentService.getAIAgentResponse(autoIntroText, conversationHistory);
+        
+        const botMessage = {
+          id: (Date.now() + 2).toString(),
+          text: aiResponse.message,
+          sender: 'bot',
+          timestamp: new Date().toISOString(),
+          riskLevel: aiResponse.riskLevel,
+          requiresDoctor: aiResponse.requiresDoctor,
+        };
+
+        const finalMessages = [...currentMessages, botMessage];
+        setMessages(finalMessages);
+        await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(finalMessages));
+
+        // Update conversation history
+        const newHistory = [
+          ...conversationHistory,
+          { role: 'user', message: autoIntroText },
+          { role: 'assistant', message: aiResponse.message },
+        ];
+        setConversationHistory(newHistory);
+        await AsyncStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(newHistory));
+      } catch (error) {
+        console.error('Error with HIGH RISK auto-introduction:', error);
+      } finally {
+        setIsLoading(false);
+      }
+      return;
+    }
+
+    const userMessage = {
+      id: Date.now().toString(),
+      text: inputText,
+      sender: 'user',
+      timestamp: new Date().toISOString(),
+    };
+
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(updatedMessages));
+    
+    const userInputText = inputText;
+    setInputText('');
+    setIsLoading(true);
+
+    try {
+      // Check for emergency first
+      if (AIAgentService.isEmergencyMessage(userInputText)) {
+        const emergencyResponse = AIAgentService.getEmergencyResponse();
+        
+        const botMessage = {
+          id: (Date.now() + 1).toString(),
+          text: emergencyResponse.message,
+          sender: 'bot',
+          timestamp: new Date().toISOString(),
+          riskLevel: emergencyResponse.riskLevel,
+          isEmergency: true,
+        };
+
+        const finalMessages = [...updatedMessages, botMessage];
+        setMessages(finalMessages);
+        await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(finalMessages));
+        setIsLoading(false);
+        return;
+      }
+
+      // Get AI Agent response
+      const aiResponse = await AIAgentService.getAIAgentResponse(userInputText, conversationHistory);
+      
+      const botMessage = {
+        id: (Date.now() + 1).toString(),
+        text: aiResponse.message,
+        sender: 'bot',
+        timestamp: new Date().toISOString(),
+        riskLevel: aiResponse.riskLevel,
+        requiresDoctor: aiResponse.requiresDoctor,
+      };
+
+      const finalMessages = [...updatedMessages, botMessage];
+      setMessages(finalMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(finalMessages));
+
+      // Update conversation history
+      const newHistory = [
+        ...conversationHistory,
+        { role: 'user', message: userInputText },
+        { role: 'assistant', message: aiResponse.message },
+      ];
+      setConversationHistory(newHistory);
+      await AsyncStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify(newHistory));
+
+    } catch (error) {
+      console.error('Error sending message:', error);
+      
+      const errorMessage = {
+        id: (Date.now() + 1).toString(),
+        text: 'Sorry, there was an error processing your request. Please try again.',
+        sender: 'bot',
+        timestamp: new Date().toISOString(),
+      };
+      
+      const finalMessages = [...updatedMessages, errorMessage];
+      setMessages(finalMessages);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(finalMessages));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const clearConversation = async () => {
+    try {
+      const initialMessages = [
+        { 
+          id: '1', 
+          text: 'Hello! 👋 I\'m your AI Medical Assistant, powered by advanced health analysis technology.', 
+          sender: 'bot', 
+          timestamp: new Date().toISOString() 
+        },
+        { 
+          id: '2', 
+          text: 'I\'m here to help you understand your health and provide personalized medical guidance.\n\n💡 **Demo Mode:**\n• Type "hi" for LOW RISK consultation (stable vitals)\n• Type "hello" for HIGH RISK consultation (concerning symptoms)\n\nHow can I assist you today?', 
+          sender: 'bot', 
+          timestamp: new Date().toISOString() 
+        },
+      ];
+      setMessages(initialMessages);
+      setConversationHistory([]);
+      await AsyncStorage.setItem(CHAT_MESSAGES_KEY, JSON.stringify(initialMessages));
+      await AsyncStorage.setItem(CHAT_HISTORY_KEY, JSON.stringify([]));
+    } catch (error) {
+      console.error('Error clearing conversation:', error);
+    }
+  };
+
+  const renderMessage = ({ item }) => {
+    const isHighRisk = item.riskLevel === 'HIGH' || item.isEmergency;
+    const isLowRisk = item.riskLevel === 'LOW';
+
+    return (
+      <View style={[
+        styles.messageContainer,
+        item.sender === 'user' ? styles.userMessage : styles.botMessage,
+        isHighRisk && styles.highRiskMessage,
+        isLowRisk && styles.lowRiskMessage,
+      ]}>
+        {item.sender === 'bot' && isHighRisk && (
+          <View style={styles.riskBadge}>
+            <Text style={styles.riskBadgeText}>⚠️ {item.isEmergency ? 'EMERGENCY' : 'HIGH RISK'}</Text>
+          </View>
+        )}
+        {item.sender === 'bot' && isLowRisk && (
+          <View style={[styles.riskBadge, styles.lowRiskBadge]}>
+            <Text style={[styles.riskBadgeText, styles.lowRiskBadgeText]}>✅ LOW RISK</Text>
+          </View>
+        )}
+        <Text style={[
+          styles.messageText,
+          item.sender === 'user' ? styles.userMessageText : styles.botMessageText
+        ]}>
+          {item.text}
+        </Text>
+      </View>
+    );
+  };
+
+  return (
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
+    >
+      <View style={styles.header}>
+        <View style={styles.headerContent}>
+          <View>
+            <Text style={styles.headerTitle}>AI Medical Assistant</Text>
+            <Text style={styles.headerSubtitle}>Doctor-like Consultation</Text>
+          </View>
+          <TouchableOpacity onPress={clearConversation} style={styles.clearButton}>
+            <Text style={styles.clearButtonText}>Clear</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
+
+      <FlatList
+        ref={flatListRef}
+        data={messages}
+        renderItem={renderMessage}
+        keyExtractor={(item) => item.id}
+        contentContainerStyle={styles.messagesList}
+        onContentSizeChange={() => flatListRef.current?.scrollToEnd()}
+      />
+
+      {isLoading && (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="small" color="#007AFF" />
+          <Text style={styles.loadingText}>AI Doctor is analyzing...</Text>
+        </View>
+      )}
+
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Describe your symptoms..."
+          multiline
+          maxLength={500}
+          editable={!isLoading}
+        />
+        <TouchableOpacity
+          style={[styles.sendButton, (!inputText.trim() || isLoading) && styles.sendButtonDisabled]}
+          onPress={sendMessage}
+          disabled={!inputText.trim() || isLoading}
+        >
+          <Text style={styles.sendButtonText}>Send</Text>
+        </TouchableOpacity>
+      </View>
+
+      {/* Upgrade Modal for Free Users */}
+      <Modal
+        visible={showUpgradeModal}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={() => setShowUpgradeModal(false)}
+      >
+        <View style={styles.upgradeModalOverlay}>
+          <View style={styles.upgradeModalContent}>
+            <Text style={styles.upgradeModalTitle}>🔒 Premium Feature</Text>
+            <Text style={styles.upgradeModalText}>
+              AI Agent is available exclusively for Premium subscribers.
+            </Text>
+            <Text style={styles.upgradeModalSubtext}>
+              Upgrade to Premium for just $3.99/month to get:
+            </Text>
+            <View style={styles.featureList}>
+              <Text style={styles.featureItem}>✓ Unlimited AI Summary analyses</Text>
+              <Text style={styles.featureItem}>✓ AI Agent chatbot access</Text>
+              <Text style={styles.featureItem}>✓ Doctor & hospital recommendations</Text>
+              <Text style={styles.featureItem}>✓ Priority support</Text>
+            </View>
+            <View style={styles.upgradeModalButtons}>
+              <TouchableOpacity
+                style={styles.upgradeModalButton}
+                onPress={() => {
+                  setShowUpgradeModal(false);
+                  navigation.navigate('Pricing');
+                }}
+              >
+                <Text style={styles.upgradeModalButtonText}>Upgrade to Premium</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.upgradeModalCancelButton}
+                onPress={() => setShowUpgradeModal(false)}
+              >
+                <Text style={styles.upgradeModalCancelText}>Maybe Later</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </KeyboardAvoidingView>
+  );
+}
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+  },
+  header: {
+    backgroundColor: '#007AFF',
+    padding: 16,
+    paddingTop: Platform.OS === 'ios' ? 50 : 16,
+  },
+  headerContent: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#fff',
+  },
+  headerSubtitle: {
+    fontSize: 14,
+    color: '#fff',
+    marginTop: 4,
+    opacity: 0.9,
+  },
+  clearButton: {
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 12,
+  },
+  clearButtonText: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  messagesList: {
+    padding: 16,
+  },
+  messageContainer: {
+    maxWidth: '85%',
+    marginVertical: 6,
+    padding: 12,
+    borderRadius: 16,
+  },
+  userMessage: {
+    alignSelf: 'flex-end',
+    backgroundColor: '#007AFF',
+  },
+  botMessage: {
+    alignSelf: 'flex-start',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#e0e0e0',
+  },
+  highRiskMessage: {
+    backgroundColor: '#FFF3F3',
+    borderColor: '#FF3B30',
+    borderWidth: 2,
+  },
+  lowRiskMessage: {
+    backgroundColor: '#F0FFF4',
+    borderColor: '#34C759',
+    borderWidth: 2,
+  },
+  riskBadge: {
+    backgroundColor: '#FF3B30',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 8,
+    marginBottom: 8,
+    alignSelf: 'flex-start',
+  },
+  lowRiskBadge: {
+    backgroundColor: '#34C759',
+  },
+  riskBadgeText: {
+    color: '#fff',
+    fontSize: 12,
+    fontWeight: 'bold',
+  },
+  lowRiskBadgeText: {
+    color: '#fff',
+  },
+  messageText: {
+    fontSize: 15,
+    lineHeight: 22,
+  },
+  userMessageText: {
+    color: '#fff',
+  },
+  botMessageText: {
+    color: '#000',
+  },
+  loadingContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    padding: 8,
+    paddingLeft: 16,
+  },
+  loadingText: {
+    marginLeft: 8,
+    fontSize: 14,
+    color: '#666',
+    fontStyle: 'italic',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    padding: 12,
+    backgroundColor: '#fff',
+    borderTopWidth: 1,
+    borderTopColor: '#e0e0e0',
+  },
+  input: {
+    flex: 1,
+    backgroundColor: '#f5f5f5',
+    borderRadius: 20,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    marginRight: 8,
+    fontSize: 16,
+    maxHeight: 100,
+  },
+  sendButton: {
+    backgroundColor: '#007AFF',
+    borderRadius: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    justifyContent: 'center',
+  },
+  sendButtonDisabled: {
+    backgroundColor: '#ccc',
+  },
+  sendButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  // Upgrade Modal Styles
+  upgradeModalOverlay: {
+    flex: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  upgradeModalContent: {
+    backgroundColor: '#fff',
+    borderRadius: 16,
+    padding: 24,
+    width: '100%',
+    maxWidth: 400,
+  },
+  upgradeModalTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 12,
+    textAlign: 'center',
+  },
+  upgradeModalText: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 8,
+    textAlign: 'center',
+    lineHeight: 22,
+  },
+  upgradeModalSubtext: {
+    fontSize: 14,
+    color: '#888',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  featureList: {
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  featureItem: {
+    fontSize: 15,
+    color: '#333',
+    marginBottom: 10,
+    lineHeight: 20,
+  },
+  upgradeModalButtons: {
+    gap: 10,
+  },
+  upgradeModalButton: {
+    backgroundColor: '#007AFF',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  upgradeModalButtonText: {
+    color: '#fff',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  upgradeModalCancelButton: {
+    paddingVertical: 12,
+    alignItems: 'center',
+  },
+  upgradeModalCancelText: {
+    color: '#007AFF',
+    fontSize: 15,
+  },
+});

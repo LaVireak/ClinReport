@@ -84,6 +84,7 @@ const SubscriptionScreen = ({ navigation }) => {
       savings: 17,
       icon: '🏢',
       color: colors.primary,
+      comingSoon: true,
       description: 'Complete hospital integration & premium support',
       features: [
         { text: 'All Premium features', included: true },
@@ -404,15 +405,22 @@ const SubscriptionScreen = ({ navigation }) => {
               plan.popular && styles.planCardPopular,
             ]}
           >
+            {/* Coming Soon Badge */}
+            {plan.comingSoon && (
+              <View style={styles.comingSoonBadge}>
+                <Text style={styles.comingSoonBadgeText}>🚀 COMING SOON</Text>
+              </View>
+            )}
+
             {/* Popular Badge */}
-            {plan.popular && (
+            {plan.popular && !plan.comingSoon && (
               <View style={styles.popularBadge}>
                 <Text style={styles.popularBadgeText}>⭐ MOST POPULAR</Text>
               </View>
             )}
 
             {/* Current Plan Badge */}
-            {currentPlan === plan.id && (
+            {currentPlan === plan.id && !plan.comingSoon && (
               <View style={styles.currentBadge}>
                 <Text style={styles.currentBadgeText}>✓ CURRENT PLAN</Text>
               </View>
@@ -427,19 +435,27 @@ const SubscriptionScreen = ({ navigation }) => {
             </View>
 
             <View style={styles.planPricing}>
-              <View style={styles.priceRow}>
-                <Text style={styles.currency}>$</Text>
-                <Text style={styles.price}>
-                  {billingCycle === 'monthly' ? plan.monthlyPrice : plan.annualPrice}
-                </Text>
-                <Text style={styles.period}>
-                  /{billingCycle === 'monthly' ? 'month' : 'year'}
-                </Text>
-              </View>
-              {billingCycle === 'annual' && plan.savings && (
-                <Text style={styles.savingsInfo}>
-                  Save ${((plan.monthlyPrice * 12) - plan.annualPrice).toFixed(2)} per year
-                </Text>
+              {plan.comingSoon ? (
+                <View style={styles.priceRow}>
+                  <Text style={styles.comingSoonPrice}>Coming Soon</Text>
+                </View>
+              ) : (
+                <>
+                  <View style={styles.priceRow}>
+                    <Text style={styles.currency}>$</Text>
+                    <Text style={styles.price}>
+                      {billingCycle === 'monthly' ? plan.monthlyPrice : plan.annualPrice}
+                    </Text>
+                    <Text style={styles.period}>
+                      /{billingCycle === 'monthly' ? 'month' : 'year'}
+                    </Text>
+                  </View>
+                  {billingCycle === 'annual' && plan.savings && (
+                    <Text style={styles.savingsInfo}>
+                      Save ${((plan.monthlyPrice * 12) - plan.annualPrice).toFixed(2)} per year
+                    </Text>
+                  )}
+                </>
               )}
             </View>
 
@@ -488,19 +504,22 @@ const SubscriptionScreen = ({ navigation }) => {
                 styles.planButton,
                 currentPlan === plan.id && styles.planButtonCurrent,
                 plan.popular && !currentPlan === plan.id && styles.planButtonPopular,
+                plan.comingSoon && styles.planButtonComingSoon,
               ]}
-              onPress={() => handleSelectPlan(plan.id)}
+              onPress={() => plan.comingSoon ? Alert.alert('Coming Soon', 'Enterprise plan is coming soon! Contact us for more information.') : handleSelectPlan(plan.id)}
               disabled={currentPlan === plan.id}
             >
               <Text style={[
                 styles.planButtonText,
                 currentPlan === plan.id && styles.planButtonTextCurrent,
               ]}>
-                {currentPlan === plan.id 
-                  ? 'Current Plan' 
-                  : plan.id === 'free' 
-                    ? 'Downgrade' 
-                    : 'Upgrade Now'}
+                {plan.comingSoon 
+                  ? 'Contact Us' 
+                  : currentPlan === plan.id 
+                    ? 'Current Plan' 
+                    : plan.id === 'free' 
+                      ? 'Downgrade' 
+                      : 'Upgrade Now'}
               </Text>
             </TouchableOpacity>
           </View>
@@ -1207,6 +1226,30 @@ const styles = StyleSheet.create({
   managementButtonSubtext: {
     fontSize: 12,
     color: colors.textLight,
+  },
+  comingSoonBadge: {
+    position: 'absolute',
+    top: 12,
+    right: 12,
+    backgroundColor: colors.warning,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+    zIndex: 10,
+  },
+  comingSoonBadgeText: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: colors.white,
+    letterSpacing: 0.5,
+  },
+  comingSoonPrice: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: colors.textLight,
+  },
+  planButtonComingSoon: {
+    backgroundColor: colors.secondary,
   },
 });
 

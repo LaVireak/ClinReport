@@ -191,7 +191,7 @@ const initialPatients = [
         heartRate: 72,
         weight: 75, // kg
         temperature: 36.5, // celsius
-        symptoms: '', // Free text for symptoms
+        symptoms: 'I have a mild headache and slight fatigue', // Free text for symptoms
         mood: 'good', // 'poor', 'fair', 'good', 'excellent'
         waterIntake: 8, // glasses
         exerciseDuration: 30, // minutes
@@ -287,6 +287,108 @@ const initialPatients = [
     
     // ENHANCED: Daily Logs
     dailyLogs: [],
+  },
+  {
+    id: 3,
+    name: 'Michael Chen',
+    age: 58,
+    gender: 'Male',
+    bloodType: 'B+',
+    condition: 'Hypertension and Heart Disease',
+    lastVisit: '2025-10-25',
+    nextAppointment: '2025-10-31',
+    medications: ['Amlodipine 10mg', 'Atorvastatin 40mg', 'Aspirin 81mg'],
+    notes: 'Monitor blood pressure closely. Report chest pain immediately.',
+    assignedDoctor: 'Dr. Cardio Specialist',
+    
+    // NEW: Medical History
+    medicalHistory: [
+      {
+        id: 1,
+        date: '2024-03-10',
+        diagnosis: 'Hypertension Stage 2',
+        hospital: 'Cardiology Center',
+        doctor: 'Dr. Cardio Specialist',
+        treatment: 'Started on Amlodipine and lifestyle modifications',
+        notes: 'Blood pressure: 165/98. High cardiovascular risk.',
+        dataSource: 'hospital',
+      },
+    ],
+    
+    // NEW: Disease History
+    diseaseHistory: [
+      {
+        id: 1,
+        disease: 'Hypertension',
+        diagnosedDate: '2024-03-10',
+        status: 'ongoing',
+        severity: 'severe',
+        notes: 'Requires careful monitoring',
+      },
+    ],
+    
+    // NEW: AI Assessments
+    aiAssessments: [],
+    
+    // NEW: Emergency Contacts
+    emergencyContacts: [
+      { 
+        id: 1,
+        name: 'Susan Chen', 
+        relation: 'Wife', 
+        phone: '+855555111222',
+        isPrimary: true,
+      },
+    ],
+    
+    // NEW: Medication Schedule
+    medicationSchedule: [
+      { 
+        id: 1,
+        medication: 'Amlodipine 10mg', 
+        dosage: '10mg',
+        frequency: 'daily',
+        time: '08:00 AM',
+        withFood: false,
+        notes: 'For blood pressure control',
+      },
+      { 
+        id: 2,
+        medication: 'Atorvastatin 40mg', 
+        dosage: '40mg',
+        frequency: 'daily',
+        time: '20:00 PM',
+        withFood: false,
+        notes: 'For cholesterol management',
+      },
+    ],
+    
+    // NEW: Sleep Logs
+    sleepLogs: [],
+    
+    // NEW: Exercise Logs
+    exerciseLogs: [],
+    
+    // ENHANCED: Daily Logs with HIGH RISK vitals
+    dailyLogs: [
+      {
+        id: 1,
+        date: '2025-10-29',
+        dataSource: 'self-reported',
+        medicationTaken: true,
+        medicationTime: '08:00 AM',
+        smoked: false,
+        bloodPressure: '165/98', // HIGH RISK
+        heartRate: 110, // HIGH RISK
+        weight: 92,
+        temperature: 37.2,
+        symptoms: 'severe chest pain, shortness of breath, and dizziness',
+        mood: 'poor',
+        waterIntake: 5,
+        exerciseDuration: 0,
+        notes: 'Experiencing chest discomfort and difficulty breathing',
+      },
+    ],
   },
 ];
 

@@ -3,11 +3,20 @@ import { View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput, Modal,
 import { colors } from '../styles/colors';
 import { globalStyles } from '../styles/globalStyles';
 import { usePatientData } from '../context/PatientDataContext';
-import AIAnalysisService from '../services/AIAnalysisService';
+import { useSubscription } from '../context/SubscriptionContext';
+import AISummaryService from '../services/AISummaryService';
 import { FadeInView, ScaleInView, SlideInView } from '../components/AnimatedView';
 
 const PatientDashboard = ({ navigation }) => {
   const { getCurrentPatient, addDailyLog, addAIAssessment, getLatestAIAssessment, getMedicationCompliance } = usePatientData();
+  const {
+    canUseAISummary,
+    incrementAISummaryUsage,
+    getRemainingAISummaries,
+    subscriptionPlan,
+    PLAN_FEATURES,
+    SUBSCRIPTION_PLANS,
+  } = useSubscription();
   const patientProfile = getCurrentPatient();
 
   // Use patient's daily logs from context
@@ -45,26 +54,58 @@ const PatientDashboard = ({ navigation }) => {
       return;
     }
 
+    // Check AI Summary usage limit
+    if (!canUseAISummary()) {
+      Alert.alert(
+        'AI Summary Limit Reached', 
+        `You've used all ${PLAN_FEATURES[subscriptionPlan].aiSummaryLimit} AI Summary analyses on the Free plan. Upgrade to Premium for unlimited AI analyses!`,
+        [
+          { text: 'Cancel', style: 'cancel' },
+          { text: 'Upgrade to Premium', onPress: () => navigation.navigate('Pricing') }
+        ]
+      );
+      return;
+    }
+
     // Save daily log
     addDailyLog(patientProfile.id, currentLog);
     
-    // Run AI analysis
-    const medicationCompliance = getMedicationCompliance(patientProfile.id) / 100;
+    // Run AI Summary analysis
     const analysisData = {
+      id: patientProfile.id,
+      name: patientProfile.name,
       age: patientProfile.age,
       bloodPressure: currentLog.bloodPressure,
-      heartRate: currentLog.heartRate ? Number(currentLog.heartRate) : undefined,
-      temperature: currentLog.temperature ? Number(currentLog.temperature) : undefined,
+      heartRate: currentLog.heartRate,
+      temperature: currentLog.temperature,
+      weight: currentLog.weight,
       symptoms: currentLog.symptoms || '',
-      medicationTaken: currentLog.medicationTaken,
-      medicationCompliance: medicationCompliance,
-      smoked: currentLog.smoked,
-      exerciseDuration: currentLog.exerciseDuration ? Number(currentLog.exerciseDuration) : 0,
-      waterIntake: currentLog.waterIntake ? Number(currentLog.waterIntake) : 0,
-      condition: patientProfile.condition,
+      medicalHistory: patientProfile.condition,
     };
     
-    const aiAssessment = AIAnalysisService.analyzePatientHealth(analysisData);
+    const aiSummary = AISummaryService.generateAISummary(analysisData);
+    
+    // Increment usage count after successful analysis
+    incrementAISummaryUsage();
+    
+    // Convert to format expected by dashboard
+    const aiAssessment = {
+      riskLevel: aiSummary.riskLevel,
+      riskScore: aiSummary.riskLevel === 'HIGH' ? 85 : 25,
+      timestamp: aiSummary.timestamp,
+      summary: aiSummary.summary,
+      recommendations: aiSummary.recommendations,
+      needsDoctor: aiSummary.riskLevel === 'HIGH',
+    };
+
+    // Add specialist and hospital info for HIGH risk
+    if (aiSummary.riskLevel === 'HIGH') {
+      const specialistInfo = AISummaryService.getSpecializedDoctorRecommendation(analysisData);
+      const hospitals = AISummaryService.getHospitalRecommendations();
+      
+      aiAssessment.suggestedSpecialist = specialistInfo;
+      aiAssessment.suggestedHospitals = hospitals;
+    }
     
     // Save AI assessment
     addAIAssessment(patientProfile.id, aiAssessment);
@@ -160,6 +201,105 @@ const PatientDashboard = ({ navigation }) => {
           <TouchableOpacity style={styles.profileBadge}>
             <Text style={styles.profileInitial}>{patientProfile.name[0]}</Text>
           </TouchableOpacity>
+        </View>
+      </FadeInView>
+
+      {/* Subscription Plan Card */}
+      <FadeInView duration={600} delay={100}>
+        <View style={styles.subscriptionCard}>
+          <View style={styles.subscriptionHeader}>
+            <View style={styles.subscriptionLeft}>
+              <Text style={styles.subscriptionIcon}>
+                {subscriptionPlan === 'free' && '📱'}
+                {subscriptionPlan === 'premium' && '⭐'}
+                {subscriptionPlan === 'enterprise' && '🏢'}
+              </Text>
+              <View>
+                <Text style={styles.subscriptionTitle}>
+                  {subscriptionPlan === 'free' && 'Free Plan'}
+                  {subscriptionPlan === 'premium' && 'Premium Plan'}
+                  {subscriptionPlan === 'enterprise' && 'Enterprise Plan'}
+                </Text>
+                <Text style={styles.subscriptionSubtitle}>
+                  {subscriptionPlan === 'free' && 'Basic health tracking'}
+                  {subscriptionPlan === 'premium' && 'AI-powered insights'}
+                  {subscriptionPlan === 'enterprise' && 'Full hospital integration'}
+                </Text>
+              </View>
+            </View>
+            {subscriptionPlan === 'free' && (
+              <TouchableOpacity 
+                style={styles.upgradeButton}
+                onPress={() => navigation.navigate('Pricing')}
+              >
+                <Text style={styles.upgradeButtonText}>Upgrade</Text>
+              </TouchableOpacity>
+            )}
+            {subscriptionPlan !== 'free' && (
+              <TouchableOpacity 
+                style={styles.manageButton}
+                onPress={() => navigation.navigate('Subscription')}
+              >
+                <Text style={styles.manageButtonText}>Manage</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+          
+          {subscriptionPlan === 'free' && (
+            <View style={styles.subscriptionLimits}>
+              <Text style={styles.subscriptionLimitText}>
+                • AI Summaries: {getRemainingAISummaries()}/{PLAN_FEATURES.free.aiSummaryLimit} remaining
+              </Text>
+              <Text style={styles.subscriptionLimitText}>
+                • Limited to {PLAN_FEATURES.free.maxDailyLogs} daily logs per month
+              </Text>
+              <Text style={styles.subscriptionLimitText}>
+                • No AI agent access
+              </Text>
+            </View>
+          )}
+          
+          {subscriptionPlan === 'premium' && (
+            <View style={styles.subscriptionFeatures}>
+              <Text style={styles.subscriptionFeatureHeader}>Active Features:</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Unlimited AI health summaries</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Unlimited daily logs</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ AI Medical Assistant chat</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Smart health recommendations</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Doctor recommendations</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Priority email support</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Advanced health notifications</Text>
+              <Text style={styles.subscriptionFeatureText}>✅ Risk assessment & analysis</Text>
+            </View>
+          )}
+          
+          {subscriptionPlan === 'enterprise' && (
+            <View style={styles.subscriptionComingSoon}>
+              <View style={styles.comingSoonBadge}>
+                <Text style={styles.comingSoonText}>🚀 COMING SOON</Text>
+              </View>
+              <Text style={styles.comingSoonTitle}>Enterprise Plan</Text>
+              <Text style={styles.comingSoonDescription}>
+                Full hospital integration and premium support features are under development.
+              </Text>
+              <View style={styles.subscriptionFeatures}>
+                <Text style={styles.subscriptionFeatureHeader}>Upcoming Features:</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ Direct hospital integration</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ Real-time data sync</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ MeetDoctors priority booking</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ Emergency auto-notification</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ 24/7 phone support</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ Dedicated health advisor</Text>
+                <Text style={styles.subscriptionFeatureText}>⏳ Family account (5 members)</Text>
+              </View>
+              <TouchableOpacity 
+                style={styles.contactButton}
+                onPress={() => navigation.navigate('Contact')}
+              >
+                <Text style={styles.contactButtonText}>Contact for Early Access</Text>
+              </TouchableOpacity>
+            </View>
+          )}
         </View>
       </FadeInView>
 
@@ -287,6 +427,85 @@ const PatientDashboard = ({ navigation }) => {
         </SlideInView>
       )}
 
+      {/* Quick Data Input & Photo Section */}
+      <SlideInView delay={550}>
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>📝 Quick Health Input</Text>
+          <View style={styles.quickInputCard}>
+            <Text style={styles.quickInputTitle}>Log Your Health Data</Text>
+            <Text style={styles.quickInputSubtitle}>
+              Input your symptoms, vitals, or upload medical reports for AI analysis
+            </Text>
+            
+            <View style={styles.quickInputButtons}>
+              <TouchableOpacity 
+                style={styles.inputOptionButton}
+                onPress={openLogForm}
+              >
+                <Text style={styles.inputOptionIcon}>⌨️</Text>
+                <Text style={styles.inputOptionText}>Type Data</Text>
+                <Text style={styles.inputOptionSubtext}>Manual entry</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.inputOptionButton}
+                onPress={() => {
+                  Alert.alert(
+                    'Photo Upload',
+                    'Camera functionality will allow you to:\n\n📸 Take photos of medical reports\n📄 Upload lab results\n💊 Scan prescriptions\n\nAI will analyze and extract relevant health data.',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      { 
+                        text: 'Take Photo', 
+                        onPress: () => {
+                          // In a real app, this would open camera
+                          Alert.alert('Coming Soon', 'Camera integration will be available in the next update!');
+                        }
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Text style={styles.inputOptionIcon}>📸</Text>
+                <Text style={styles.inputOptionText}>Take Photo</Text>
+                <Text style={styles.inputOptionSubtext}>Scan reports</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity 
+                style={styles.inputOptionButton}
+                onPress={() => {
+                  Alert.alert(
+                    'Upload Files',
+                    'File upload will support:\n\n📄 PDF documents\n🖼️ Image files (JPG, PNG)\n📊 Lab reports\n📋 Prescriptions\n\nAI Summary will process and analyze your documents.',
+                    [
+                      { text: 'Cancel', style: 'cancel' },
+                      { 
+                        text: 'Choose File', 
+                        onPress: () => {
+                          // In a real app, this would open file picker
+                          Alert.alert('Coming Soon', 'File upload will be available in the next update!');
+                        }
+                      },
+                    ]
+                  );
+                }}
+              >
+                <Text style={styles.inputOptionIcon}>📁</Text>
+                <Text style={styles.inputOptionText}>Upload File</Text>
+                <Text style={styles.inputOptionSubtext}>PDF, Images</Text>
+              </TouchableOpacity>
+            </View>
+            
+            <View style={styles.aiAnalysisNote}>
+              <Text style={styles.aiAnalysisIcon}>🤖</Text>
+              <Text style={styles.aiAnalysisText}>
+                AI will automatically analyze your input and provide health insights
+              </Text>
+            </View>
+          </View>
+        </View>
+      </SlideInView>
+
       {/* Today's Status */}
       <SlideInView delay={600}>
         <View style={styles.section}>
@@ -337,11 +556,11 @@ const PatientDashboard = ({ navigation }) => {
 
           <TouchableOpacity
             style={styles.quickActionCard}
-            onPress={() => navigation.navigate('DoctorRecommendation')}
+            onPress={() => navigation.navigate('Chat')}
           >
             <Text style={styles.quickActionIcon}>👨‍⚕️</Text>
-            <Text style={styles.quickActionTitle}>Find Doctor</Text>
-            <Text style={styles.quickActionSubtitle}>AI Recommendations</Text>
+            <Text style={styles.quickActionTitle}>AI Assistant</Text>
+            <Text style={styles.quickActionSubtitle}>Get Doctor Advice</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -455,13 +674,35 @@ const PatientDashboard = ({ navigation }) => {
         onRequestClose={() => setModalVisible(false)}
       >
         <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Daily Health Log</Text>
-            <Text style={styles.modalSubtitle}>Track your daily activities</Text>
+          <View style={styles.modalContainer}>
+            <ScrollView 
+              style={styles.modalContent} 
+              contentContainerStyle={styles.modalScrollContent}
+              showsVerticalScrollIndicator={false}
+            >
+              <Text style={styles.modalTitle}>Daily Health Log</Text>
+              <Text style={styles.modalSubtitle}>Track your daily activities</Text>
 
-            {/* Data Source Toggle */}
-            <View style={styles.formGroup}>
-              <Text style={styles.formLabel}>Data Source</Text>
+              {/* AI Summary Usage Indicator */}
+              {subscriptionPlan === SUBSCRIPTION_PLANS.FREE && (
+                <View style={styles.usageIndicator}>
+                  <Text style={styles.usageText}>
+                    🤖 AI Summaries Remaining: {getRemainingAISummaries()} / {PLAN_FEATURES[SUBSCRIPTION_PLANS.FREE].aiSummaryLimit}
+                  </Text>
+                  {getRemainingAISummaries() === 0 && (
+                    <TouchableOpacity 
+                      style={styles.upgradeButton} 
+                      onPress={() => navigation.navigate('Pricing')}
+                    >
+                      <Text style={styles.upgradeButtonText}>Upgrade to Premium</Text>
+                    </TouchableOpacity>
+                  )}
+                </View>
+              )}
+
+              {/* Data Source Toggle */}
+              <View style={styles.formGroup}>
+                <Text style={styles.formLabel}>Data Source</Text>
               <View style={styles.dataSourceToggle}>
                 <TouchableOpacity
                   style={[
@@ -478,13 +719,13 @@ const PatientDashboard = ({ navigation }) => {
                 <TouchableOpacity
                   style={[
                     styles.dataSourceButton,
-                    currentLog.dataSource === 'self' && styles.dataSourceActive,
+                    currentLog.dataSource === 'self-reported' && styles.dataSourceActive,
                   ]}
-                  onPress={() => setCurrentLog({ ...currentLog, dataSource: 'self' })}
+                  onPress={() => setCurrentLog({ ...currentLog, dataSource: 'self-reported' })}
                 >
                   <Text style={[
                     styles.dataSourceText,
-                    currentLog.dataSource === 'self' && styles.dataSourceTextActive,
+                    currentLog.dataSource === 'self-reported' && styles.dataSourceTextActive,
                   ]}>📝 Self-Reported</Text>
                 </TouchableOpacity>
               </View>
@@ -548,7 +789,7 @@ const PatientDashboard = ({ navigation }) => {
             <View style={styles.formGroup}>
               <Text style={styles.formLabel}>😊 How are you feeling?</Text>
               <View style={styles.moodButtons}>
-                {['😄 Great', '😊 Good', '😐 Okay', '😔 Not Good', '😞 Poor'].map((mood) => (
+                {['😄 Great', '😊 Good', '😐 Okay'].map((mood) => (
                   <TouchableOpacity
                     key={mood}
                     style={[
@@ -680,7 +921,7 @@ const PatientDashboard = ({ navigation }) => {
                 onPress={() => {
                   setModalVisible(false);
                   setCurrentLog({
-                    dataSource: 'self',
+                    dataSource: 'self-reported',
                     heartRate: '',
                     temperature: '',
                     weight: '',
@@ -705,6 +946,8 @@ const PatientDashboard = ({ navigation }) => {
                 <Text style={styles.saveButtonText}>Save Log</Text>
               </TouchableOpacity>
             </View>
+            <View style={styles.scrollSpacer} />
+            </ScrollView>
           </View>
         </View>
       </Modal>
@@ -731,12 +974,10 @@ const PatientDashboard = ({ navigation }) => {
                 <View style={[
                   styles.aiFullCard,
                   latestAIAssessment.riskLevel === 'HIGH' && styles.aiCardHigh,
-                  latestAIAssessment.riskLevel === 'MEDIUM' && styles.aiCardMedium,
                   latestAIAssessment.riskLevel === 'LOW' && styles.aiCardLow,
                 ]}>
                   <Text style={styles.aiFullRiskLevel}>
                     {latestAIAssessment.riskLevel === 'HIGH' && '⚠️ HIGH RISK'}
-                    {latestAIAssessment.riskLevel === 'MEDIUM' && '⚡ MEDIUM RISK'}
                     {latestAIAssessment.riskLevel === 'LOW' && '✅ LOW RISK'}
                   </Text>
                   <Text style={styles.aiFullRiskScore}>
@@ -746,6 +987,14 @@ const PatientDashboard = ({ navigation }) => {
                     Assessed: {new Date(latestAIAssessment.timestamp).toLocaleString()}
                   </Text>
                 </View>
+
+                {/* AI Summary */}
+                {latestAIAssessment.summary && (
+                  <View style={styles.aiFullSection}>
+                    <Text style={styles.aiFullSectionTitle}>📋 Health Summary</Text>
+                    <Text style={styles.aiSummaryText}>{latestAIAssessment.summary}</Text>
+                  </View>
+                )}
 
                 {/* All Risk Factors */}
                 {latestAIAssessment.factors && latestAIAssessment.factors.length > 0 && (
@@ -780,56 +1029,45 @@ const PatientDashboard = ({ navigation }) => {
                     <Text style={styles.aiFullSectionTitle}>📝 Recommendations</Text>
                     {latestAIAssessment.recommendations.map((rec, index) => (
                       <View key={index} style={styles.aiFullRecItem}>
-                        <Text style={styles.aiFullRecText}>• {rec}</Text>
+                        <Text style={styles.aiFullRecText}>{rec}</Text>
                       </View>
                     ))}
                   </View>
                 )}
 
-                {/* Doctor Recommendations */}
-                {latestAIAssessment.needsDoctor && latestAIAssessment.suggestedDoctors && latestAIAssessment.suggestedDoctors.length > 0 && (
+                {/* Specialist Recommendation for HIGH RISK */}
+                {latestAIAssessment.needsDoctor && latestAIAssessment.suggestedSpecialist && (
                   <View style={styles.aiFullSection}>
-                    <Text style={styles.aiFullSectionTitle}>👨‍⚕️ Recommended Doctors</Text>
-                    {latestAIAssessment.suggestedDoctors.map((doctor, index) => (
-                      <View key={index} style={styles.aiFullDoctorCard}>
-                        <Text style={styles.aiFullDoctorName}>{doctor.name}</Text>
-                        <Text style={styles.aiFullDoctorSpecialty}>{doctor.specialty}</Text>
-                        <Text style={styles.aiFullDoctorHospital}>🏥 {doctor.hospital}</Text>
-                        <Text style={styles.aiFullDoctorRating}>⭐ {doctor.rating}</Text>
-                        <Text style={styles.aiFullDoctorFee}>{doctor.consultationFee}</Text>
-                        {doctor.availability === 'online' && (
-                          <Text style={styles.aiFullDoctorOnline}>🟢 Available Online Now</Text>
-                        )}
-                        {doctor.isMeetDoctorsPartner && (
-                          <Text style={styles.aiFullDoctorPartner}>✨ MeetDoctors Partner</Text>
-                        )}
-                        <TouchableOpacity style={styles.aiContactButton}>
-                          <Text style={styles.aiContactButtonText}>Contact Doctor</Text>
-                        </TouchableOpacity>
-                      </View>
-                    ))}
+                    <Text style={styles.aiFullSectionTitle}>👨‍⚕️ Recommended Specialist</Text>
+                    <View style={styles.aiFullDoctorCard}>
+                      <Text style={styles.aiFullDoctorName}>{latestAIAssessment.suggestedSpecialist.specialty}</Text>
+                      <Text style={styles.aiFullDoctorSpecialty}>{latestAIAssessment.suggestedSpecialist.reason}</Text>
+                      <Text style={styles.aiFullDoctorFee}>Urgency: {latestAIAssessment.suggestedSpecialist.urgency}</Text>
+                    </View>
                   </View>
                 )}
 
                 {/* Hospital Recommendations */}
                 {latestAIAssessment.suggestedHospitals && latestAIAssessment.suggestedHospitals.length > 0 && (
                   <View style={styles.aiFullSection}>
-                    <Text style={styles.aiFullSectionTitle}>🏥 Nearby Hospitals</Text>
+                    <Text style={styles.aiFullSectionTitle}>🏥 Recommended Hospitals</Text>
                     {latestAIAssessment.suggestedHospitals.map((hospital, index) => (
                       <View key={index} style={styles.aiFullHospitalCard}>
                         <Text style={styles.aiFullHospitalName}>{hospital.name}</Text>
-                        <Text style={styles.aiFullHospitalAddress}>📍 {hospital.address}</Text>
                         <Text style={styles.aiFullHospitalDistance}>
-                          {hospital.distance} km away
+                          📍 {hospital.distance} away
                         </Text>
-                        {hospital.hasEmergency && (
+                        <Text style={styles.aiFullHospitalAddress}>
+                          ⭐ Rating: {hospital.rating}/5.0
+                        </Text>
+                        <Text style={styles.aiFullDoctorSpecialty}>
+                          Specialties: {hospital.specialties.join(', ')}
+                        </Text>
+                        {hospital.emergency && (
                           <Text style={styles.aiFullHospitalEmergency}>
                             🚨 Emergency Services Available 24/7
                           </Text>
                         )}
-                        <TouchableOpacity style={styles.aiContactButton}>
-                          <Text style={styles.aiContactButtonText}>Get Directions</Text>
-                        </TouchableOpacity>
                       </View>
                     ))}
                   </View>
@@ -840,7 +1078,17 @@ const PatientDashboard = ({ navigation }) => {
                   <View style={styles.aiWarningBox}>
                     <Text style={styles.aiWarningIcon}>⚠️</Text>
                     <Text style={styles.aiWarningText}>
-                      Your health assessment indicates high risk. Please consult a healthcare professional as soon as possible.
+                      HIGH RISK DETECTED: Your health assessment indicates concerning patterns. Please consult with a specialized doctor or visit a hospital as soon as possible. Do not delay seeking professional medical attention.
+                    </Text>
+                  </View>
+                )}
+
+                {/* Low Risk Message */}
+                {latestAIAssessment.riskLevel === 'LOW' && (
+                  <View style={[styles.aiWarningBox, { backgroundColor: '#D4EDDA', borderLeftColor: colors.success }]}>
+                    <Text style={styles.aiWarningIcon}>✅</Text>
+                    <Text style={[styles.aiWarningText, { color: '#155724' }]}>
+                      LOW RISK: Your health indicators appear stable. Continue monitoring your health and maintain healthy lifestyle practices. You can also chat with our AI Medical Assistant for general health guidance.
                     </Text>
                   </View>
                 )}
@@ -1101,18 +1349,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  modalContent: {
-    backgroundColor: colors.white,
-    borderRadius: 20,
-    padding: 28,
+  modalContainer: {
     width: '90%',
     maxWidth: 400,
-    maxHeight: '90%',
+    maxHeight: '85%',
+    backgroundColor: colors.white,
+    borderRadius: 20,
     shadowColor: colors.black,
     shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.3,
     shadowRadius: 20,
     elevation: 10,
+  },
+  modalContent: {
+    padding: 28,
+  },
+  modalScrollContent: {
+    paddingBottom: 20,
+  },
+  scrollSpacer: {
+    height: 20,
   },
   modalTitle: {
     fontSize: 22,
@@ -1180,7 +1436,8 @@ const styles = StyleSheet.create({
   },
   modalButtons: {
     flexDirection: 'row',
-    marginTop: 8,
+    marginTop: 20,
+    marginBottom: 10,
   },
   modalButton: {
     flex: 1,
@@ -1474,6 +1731,12 @@ const styles = StyleSheet.create({
     color: colors.textDark,
     marginBottom: 12,
   },
+  aiSummaryText: {
+    fontSize: 14,
+    color: colors.textDark,
+    lineHeight: 22,
+    whiteSpace: 'pre-line',
+  },
   aiFullFactorItem: {
     marginBottom: 8,
     paddingBottom: 8,
@@ -1668,6 +1931,233 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: colors.textLight,
     textAlign: 'center',
+  },
+  // Subscription Usage Indicator
+  usageIndicator: {
+    backgroundColor: colors.lightGray,
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  usageText: {
+    fontSize: 14,
+    color: colors.textDark,
+    fontWeight: '600',
+    textAlign: 'center',
+  },
+  upgradeButton: {
+    backgroundColor: colors.primary,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    alignItems: 'center',
+  },
+  upgradeButtonText: {
+    color: colors.white,
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  manageButton: {
+    backgroundColor: colors.white,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 6,
+    alignItems: 'center',
+    borderWidth: 1,
+    borderColor: colors.primary,
+  },
+  manageButtonText: {
+    color: colors.primary,
+    fontSize: 13,
+    fontWeight: '600',
+  },
+  // Subscription Card Styles
+  subscriptionCard: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 16,
+    marginHorizontal: 16,
+    marginBottom: 16,
+    borderWidth: 2,
+    borderColor: colors.primary,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 5,
+  },
+  subscriptionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 12,
+  },
+  subscriptionLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+  },
+  subscriptionIcon: {
+    fontSize: 36,
+    marginRight: 12,
+  },
+  subscriptionTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 2,
+  },
+  subscriptionSubtitle: {
+    fontSize: 13,
+    color: colors.textLight,
+  },
+  subscriptionLimits: {
+    backgroundColor: '#FFF3CD',
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  subscriptionLimitText: {
+    fontSize: 12,
+    color: '#856404',
+    marginBottom: 4,
+  },
+  subscriptionFeatures: {
+    backgroundColor: colors.gray50,
+    padding: 12,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+  subscriptionFeatureHeader: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 8,
+  },
+  subscriptionFeatureText: {
+    fontSize: 12,
+    color: colors.textDark,
+    marginBottom: 4,
+    lineHeight: 18,
+  },
+  subscriptionComingSoon: {
+    marginTop: 8,
+  },
+  comingSoonBadge: {
+    backgroundColor: '#FF9800',
+    paddingVertical: 6,
+    paddingHorizontal: 12,
+    borderRadius: 20,
+    alignSelf: 'flex-start',
+    marginBottom: 12,
+  },
+  comingSoonText: {
+    color: colors.white,
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
+  comingSoonTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 8,
+  },
+  comingSoonDescription: {
+    fontSize: 13,
+    color: colors.textLight,
+    marginBottom: 12,
+    lineHeight: 18,
+  },
+  contactButton: {
+    backgroundColor: colors.white,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 12,
+    borderWidth: 2,
+    borderColor: '#FF9800',
+  },
+  contactButtonText: {
+    color: '#FF9800',
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  // Quick Data Input Section Styles
+  quickInputCard: {
+    backgroundColor: colors.white,
+    borderRadius: 16,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  quickInputTitle: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: colors.textDark,
+    marginBottom: 4,
+  },
+  quickInputSubtitle: {
+    fontSize: 13,
+    color: colors.textLight,
+    marginBottom: 16,
+    lineHeight: 18,
+  },
+  quickInputButtons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+  inputOptionButton: {
+    flex: 1,
+    backgroundColor: colors.gray50,
+    borderRadius: 12,
+    padding: 12,
+    alignItems: 'center',
+    marginHorizontal: 4,
+    borderWidth: 1,
+    borderColor: colors.border,
+  },
+  inputOptionIcon: {
+    fontSize: 32,
+    marginBottom: 8,
+  },
+  inputOptionText: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: colors.textDark,
+    marginBottom: 2,
+  },
+  inputOptionSubtext: {
+    fontSize: 11,
+    color: colors.textLight,
+  },
+  aiAnalysisNote: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#E7F3FF',
+    padding: 12,
+    borderRadius: 8,
+    borderWidth: 1,
+    borderColor: '#B3D9FF',
+  },
+  aiAnalysisIcon: {
+    fontSize: 20,
+    marginRight: 8,
+  },
+  aiAnalysisText: {
+    flex: 1,
+    fontSize: 12,
+    color: '#0066CC',
+    lineHeight: 16,
   },
 });
 
